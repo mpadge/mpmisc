@@ -48,6 +48,6 @@ repos:
         files: '\.Rhistory|\.RData|\.Rds|\.rds$'
     -   id: testpre
         name: Test new pre-commit hook
-        entry: /home/smexus/bin/precommit/testpre
+        entry: inst/precommit/description
         language: script
         # `exclude: <regex>` to allow committing specific files.
