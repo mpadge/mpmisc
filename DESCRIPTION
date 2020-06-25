@@ -1,12 +1,13 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.0.0.002
+Version: 0.0.0.003
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
            role = c("aut", "cre"),
            email = "mark.padgham@email.com")
-Description: Miscellaneous functions which I load in my '.Rprofile'.
+Description: Miscellaneous functions which I load in my
+    '.Rprofile'.
 License: MIT + file LICENSE
 Imports:
     jsonlite,
