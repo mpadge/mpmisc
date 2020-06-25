@@ -8,3 +8,4 @@
 ^\.Rproj\.user$
 ^\.github$
 ^LICENSE\.md$
+^codemeta\.json$
