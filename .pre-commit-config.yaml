@@ -46,8 +46,8 @@ repos:
         entry: Cannot commit .Rhistory, .RData, .Rds or .rds.
         language: fail
         files: '\.Rhistory|\.RData|\.Rds|\.rds$'
-    -   id: testpre
-        name: Test new pre-commit hook
+    -   id: description version
+        name: Version has been incremeneted in DESCRIPTION
         entry: inst/precommit/description
         language: script
         # `exclude: <regex>` to allow committing specific files.
