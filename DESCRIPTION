@@ -1,6 +1,6 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -8,6 +8,9 @@ Authors@R:
            email = "mark.padgham@email.com")
 Description: Miscellaneous functions which I load in my '.Rprofile'.
 License: MIT + file LICENSE
+Imports:
+    jsonlite,
+    rprojroot
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
