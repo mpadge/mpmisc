@@ -42,8 +42,15 @@ This repository then has both:
 
 1.  A version of `.pre-commit-config.yaml` modified from the original
     version in the `precommit` R package, primarily through the addition
-    of: `- id: description version name: Version has been incremeneted
-    in DESCRIPTION entry: inst/precommit/description language: script`
+    of:
+
+<!-- end list -->
+
+    -   id: description version
+        name: Version has been incremeneted in DESCRIPTION
+        entry: inst/precommit/description
+        language: script
+
 2.  The corresponding `inst/precommit/description` file which checks
     first that `DESCRIPTION` has been modified, and secondly that the
     modification includes a change to `"Version"`.
