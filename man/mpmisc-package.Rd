@@ -9,6 +9,14 @@
 Miscellaneous functions which I load in my
     '.Rprofile'.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/mpadge/mpmisc}
+  \item Report bugs at \url{https://github.com/mpadge/mpmisc/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Mark Padgham \email{mark.padgham@email.com}
 

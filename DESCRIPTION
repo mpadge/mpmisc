@@ -1,6 +1,6 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.0.0.012
+Version: 0.0.0.013
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -14,6 +14,9 @@ BugReports: https://github.com/mpadge/mpmisc/issues
 Imports:
     jsonlite,
     rprojroot
+Suggests:
+    httr,
+    precommit
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
