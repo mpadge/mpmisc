@@ -6,7 +6,8 @@
 \alias{mpmisc-package}
 \title{mpmisc: Miscellaneous functions which I load in my '.Rprofile'}
 \description{
-Miscellaneous functions which I load in my '.Rprofile'.
+Miscellaneous functions which I load in my
+    '.Rprofile'.
 }
 \author{
 \strong{Maintainer}: Mark Padgham \email{mark.padgham@email.com}
