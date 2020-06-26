@@ -1,6 +1,6 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.0.0.011
+Version: 0.0.0.012
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
@@ -9,6 +9,8 @@ Authors@R:
 Description: Miscellaneous functions which I load in my
     '.Rprofile'.
 License: MIT + file LICENSE
+URL: https://github.com/mpadge/mpmisc
+BugReports: https://github.com/mpadge/mpmisc/issues
 Imports:
     jsonlite,
     rprojroot
