@@ -9,3 +9,4 @@
 ^\.github$
 ^LICENSE\.md$
 ^codemeta\.json$
+^\.pre-commit-config\.yaml$
