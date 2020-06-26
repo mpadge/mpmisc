@@ -8,7 +8,7 @@
   "description": "Miscellaneous functions which I load in my\n    '.Rprofile'.",
   "name": "mpmisc: Miscellaneous functions which I load in my '.Rprofile'",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.015",
+  "version": "0.0.0.16",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -64,6 +64,30 @@
   "softwareRequirements": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "gert",
+      "name": "gert",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=gert"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "here",
+      "name": "here",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=here"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "jsonlite",
       "name": "jsonlite",
       "provider": {
@@ -73,22 +97,10 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=jsonlite"
-    },
-    {
-      "@type": "SoftwareApplication",
-      "identifier": "rprojroot",
-      "name": "rprojroot",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=rprojroot"
     }
   ],
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "readme": "https://github.com/mpadge/mpmisc/blob/master/README.md",
-  "fileSize": "4.503KB",
+  "fileSize": "4.72KB",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues"
 }

@@ -15,14 +15,7 @@
 #'
 #' @export
 increment_dev_version <- function() {
-  error <- NULL # suppress undefined global fn note
-  pkg_dir <- tryCatch(
-    rprojroot::find_root("DESCRIPTION"),
-    error = function(e) NULL
-  )
-  if (is.null(pkg_dir)) {
-    error("Not in a package directory")
-  }
+  pkg_dir <- here::here ()
 
   desc <- readLines(file.path(pkg_dir, "DESCRIPTION"))
   vers_line_num <- grep("Version:", desc)

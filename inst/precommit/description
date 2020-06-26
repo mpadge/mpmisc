@@ -6,7 +6,7 @@ chk <- ("DESCRIPTION" %in% s$file &&
 if (!chk)
     stop ("DESCRIPTION has not been updated")
 
-f <- file.path (rprojroot::find_root("DESCRIPTION"), "DESCRIPTION")
+f <- file.path (here::here(), "DESCRIPTION")
 x <- system2 ("git", args = c ("diff", "--cached", "-U0", f), stdout = TRUE)
 if (!any (grepl ("^\\+Version", x)))
     stop ("Version number in DESCRIPTION has not been incremented")

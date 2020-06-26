@@ -9,10 +9,17 @@
 #' @note This function must be run within a package directory, and requires the
 #' \pkg{precommit} package to be installed.
 #'
+#' @note The function downloads a pre-commit hook file in
+#' 'inst/precommit/description', and notes that this file should be moved to a
+#' more general location, and the '.pre-commit-hooks.yaml' file updated
+#' accordingly. It may also be necessary to change the permissions of the
+#' 'description' pre-commit hook, for example (on *nix systems) via 'sudo chmod
+#' u_x description'.
+#'
 #' @param url The location of a repository containing the desired
 #' '.pre-commit-hooks.yaml' file to be installed in the local repository.
-#' @param The branch of the repository from which the `.pre-commit-hooks.yaml`
-#' file should be copied.
+#' @param branch The branch of the remote repository from which the
+#' `.pre-commit-hooks.yaml` file should be copied.
 #'
 #' @export
 add_precommit_hooks <- function (url = "https://github.com/mpadge/mpmisc",
@@ -24,7 +31,7 @@ add_precommit_hooks <- function (url = "https://github.com/mpadge/mpmisc",
         precommit::use_precommit ()
     }
 
-    grab_local_hooks (url, branch)
+    grab_local_hooks (url, branch, here)
 }
 
 hooks_exist <- function (here) {
@@ -32,12 +39,12 @@ hooks_exist <- function (here) {
     any (grepl ("^pre-commit$", lf))
 }
 
-grab_local_hooks <- function (url, branch) {
-    url <- paste0 (gsub ("/$", "", url),
-                   "/raw/",
-                   branch,
-                   "/.pre-commit-config.yaml")
-    x <- httr::GET (url)
+grab_local_hooks <- function (url, branch, here) {
+    u <- paste0 (gsub ("/$", "", url),
+                 "/raw/",
+                 branch,
+                 "/.pre-commit-config.yaml")
+    x <- httr::GET (u)
     if (x$status_code != 200)
         stop ("http status [", x$status_code, "]")
 
@@ -47,20 +54,43 @@ grab_local_hooks <- function (url, branch) {
 
     add_to_rbuildignore (here)
 
+    download_hook (url, branch, here)
+
     check_hook_location (here)
 }
 
-add_to_rbuildignore <- function (here)
-{
+add_to_rbuildignore <- function (here) {
     f <- file.path (here, ".Rbuildignore")
     rb <- NULL
     if (file.exists (f))
         rb <- readLines (f)
 
-    chk <- grepl ("\\^\\\\\\.pre-commit-config.yaml\\$", rb)
+    chk <- grepl ("\\^\\\\\\.pre-commit-config\\\\.yaml\\$", rb)
     if (!any (chk))
         rb <- c (rb, "^\\.pre-commit-config\\.yaml$")
     writeLines (rb, con = f)
+}
+
+download_hook <- function (url, branch, here) {
+    fp <- file.path (here, "inst", "precommit")
+    if (!file.exists (fp))
+        dir.create (fp, recursive = TRUE)
+
+    f <- file.path (fp, "description")
+    if (!file.exists (f)) {
+        u <- paste0 (gsub ("/$", "", url),
+                     "/raw/",
+                     branch,
+                     "/inst/precommit/description")
+        x <- httr::GET (u)
+        if (x$status_code != 200)
+            stop ("http status [", x$status_code, "]")
+
+        xt <- httr::content (x, as = "text", encoding = "UTF-8")
+        xt <- strsplit (xt, "\n") [[1]]
+
+        writeLines (xt, f)
+    }
 }
 
 check_hook_location <- function (here) {
@@ -74,6 +104,7 @@ check_hook_location <- function (here) {
         i <- i + grep ("entry:", x [i:length (x)]) - 1
         xi <- gsub ("\\s+entry:\\s", "", x [i])
         message ("Please modify line#", i, " of 'pre-commit-config.yaml' to\n",
-                 "specify location of 'description' precommit hook")
+                 "specify location of 'description' precommit hook\n",
+                 "Current location: ", xi)
     }
 }

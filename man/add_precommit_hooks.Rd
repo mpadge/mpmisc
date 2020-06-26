@@ -13,8 +13,8 @@ add_precommit_hooks(
 \item{url}{The location of a repository containing the desired
 '.pre-commit-hooks.yaml' file to be installed in the local repository.}
 
-\item{The}{branch of the repository from which the \code{.pre-commit-hooks.yaml}
-file should be copied.}
+\item{branch}{The branch of the remote repository from which the
+\code{.pre-commit-hooks.yaml} file should be copied.}
 }
 \description{
 Add precommit hooks from the \pkg{precommit} package, and modify to include
@@ -26,4 +26,11 @@ version at the specified 'url'.
 \note{
 This function must be run within a package directory, and requires the
 \pkg{precommit} package to be installed.
+
+The function downloads a pre-commit hook file in
+'inst/precommit/description', and notes that this file should be moved to a
+more general location, and the '.pre-commit-hooks.yaml' file updated
+accordingly. It may also be necessary to change the permissions of the
+'description' pre-commit hook, for example (on *nix systems) via 'sudo chmod
+u_x description'.
 }
