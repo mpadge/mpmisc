@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>mpmisc: Miscellaneous functions which I load in my '.Rprofile' — mpmisc-package • mpmisc</title>
+<title>add_precommit_hooks — add_precommit_hooks • mpmisc</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,12 @@
 
 
 
-<meta property="og:title" content="mpmisc: Miscellaneous functions which I load in my '.Rprofile' — mpmisc-package" />
-<meta property="og:description" content="Miscellaneous functions which I load in my
-    '.Rprofile'." />
+<meta property="og:title" content="add_precommit_hooks — add_precommit_hooks" />
+<meta property="og:description" content="Add precommit hooks from the precommit package, and modify to include
+an additional hook to ensure package version is incremented on every commit
+(via the increment_dev_version function). This function can also be
+used to update a local '.pre-commit-config.yaml' file to reflect the latest
+version at the specified 'url'." />
 
 
 
@@ -109,29 +112,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>mpmisc: Miscellaneous functions which I load in my '.Rprofile'</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mpadge/mpmisc/blob/master/R/mpmisc-package.R'><code>R/mpmisc-package.R</code></a></small>
-    <div class="hidden name"><code>mpmisc-package.Rd</code></div>
+    <h1>add_precommit_hooks</h1>
+    <small class="dont-index">Source: <a href='https://github.com/mpadge/mpmisc/blob/master/R/precommit.R'><code>R/precommit.R</code></a></small>
+    <div class="hidden name"><code>add_precommit_hooks.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Miscellaneous functions which I load in my
-    '.Rprofile'.</p>
+    <p>Add precommit hooks from the <span class="pkg">precommit</span> package, and modify to include
+an additional hook to ensure package version is incremented on every commit
+(via the increment_dev_version function). This function can also be
+used to update a local '.pre-commit-config.yaml' file to reflect the latest
+version at the specified 'url'.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>add_precommit_hooks</span>(
+  url = <span class='st'>"https://github.com/mpadge/mpmisc"</span>,
+  branch = <span class='st'>"master"</span>
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>url</th>
+      <td><p>The location of a repository containing the desired
+'.pre-commit-hooks.yaml' file to be installed in the local repository.</p></td>
+    </tr>
+    <tr>
+      <th>branch</th>
+      <td><p>The branch of the remote repository from which the
+<code>.pre-commit-hooks.yaml</code> file should be copied.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://github.com/mpadge/mpmisc'>https://github.com/mpadge/mpmisc</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/mpadge/mpmisc/issues'>https://github.com/mpadge/mpmisc/issues</a></p></li>
-</ul>
-
-</div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p><strong>Maintainer</strong>: Mark Padgham <a href='mailto:mark.padgham@email.com'>mark.padgham@email.com</a></p>
+    <p>This function must be run within a package directory, and requires the
+<span class="pkg">precommit</span> package to be installed.</p>
+<p>The function downloads a pre-commit hook file in
+'inst/precommit/description', and notes that this file should be moved to a
+more general location, and the '.pre-commit-hooks.yaml' file updated
+accordingly. It may also be necessary to change the permissions of the
+'description' pre-commit hook, for example (on *nix systems) via 'sudo chmod
+u_x description'.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
