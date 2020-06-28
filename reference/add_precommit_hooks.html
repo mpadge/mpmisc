@@ -76,7 +76,7 @@ version at the specified 'url'." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpmisc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.016</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.017</span>
       </span>
     </div>
 
@@ -127,7 +127,8 @@ version at the specified 'url'.</p>
 
     <pre class="usage"><span class='fu'>add_precommit_hooks</span>(
   url = <span class='st'>"https://github.com/mpadge/mpmisc"</span>,
-  branch = <span class='st'>"master"</span>
+  branch = <span class='st'>"master"</span>,
+  location = <span class='st'>"inst/precommit"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -142,6 +143,12 @@ version at the specified 'url'.</p>
       <th>branch</th>
       <td><p>The branch of the remote repository from which the
 <code>.pre-commit-hooks.yaml</code> file should be copied.</p></td>
+    </tr>
+    <tr>
+      <th>location</th>
+      <td><p>Local location to store precommit hooks. Default is relative
+path within current directory, but it is advised to set an absolute path to a
+more general location (such as '~/bin/precommit').</p></td>
     </tr>
     </table>
 
