@@ -20,10 +20,14 @@
 #' '.pre-commit-hooks.yaml' file to be installed in the local repository.
 #' @param branch The branch of the remote repository from which the
 #' `.pre-commit-hooks.yaml` file should be copied.
+#' @param location Local location to store precommit hooks. Default is relative
+#' path within current directory, but it is advised to set an absolute path to a
+#' more general location (such as '~/bin/precommit').
 #'
 #' @export
 add_precommit_hooks <- function (url = "https://github.com/mpadge/mpmisc",
-                                 branch = "master") {
+                                 branch = "master",
+                                 location = "inst/precommit") {
     requireNamespace ("precommit")
     here <- here::here ()
 
@@ -31,7 +35,7 @@ add_precommit_hooks <- function (url = "https://github.com/mpadge/mpmisc",
         precommit::use_precommit ()
     }
 
-    grab_local_hooks (url, branch, here)
+    grab_local_hooks (url, branch, location, here)
 }
 
 hooks_exist <- function (here) {
@@ -39,7 +43,7 @@ hooks_exist <- function (here) {
     any (grepl ("^pre-commit$", lf))
 }
 
-grab_local_hooks <- function (url, branch, here) {
+grab_local_hooks <- function (url, branch, location, here) {
     u <- paste0 (gsub ("/$", "", url),
                  "/raw/",
                  branch,
@@ -50,6 +54,10 @@ grab_local_hooks <- function (url, branch, here) {
 
     xt <- httr::content (x, as = "text", encoding = "UTF-8")
     xt <- strsplit (xt, "\n") [[1]]
+
+    message ("here = [", here, "]")
+    xt <- sub_location (xt, location)
+
     writeLines (xt, file.path (here, ".pre-commit-config.yaml"))
 
     add_to_rbuildignore (here)
@@ -57,6 +65,16 @@ grab_local_hooks <- function (url, branch, here) {
     download_hook (url, branch, here)
 
     check_hook_location (here)
+}
+
+sub_location <- function (x, location) {
+    loc_default <- "inst/precommit"
+    if (location != loc_default) {
+        i <- grep (loc_default, x)
+        x_start <- paste0 (strsplit (x [i], ":") [[1]] [1], ": ")
+        x [i] <- paste0 (x_start, location, "/description")
+    }
+    return (x)
 }
 
 add_to_rbuildignore <- function (here) {

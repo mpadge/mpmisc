@@ -6,7 +6,8 @@
 \usage{
 add_precommit_hooks(
   url = "https://github.com/mpadge/mpmisc",
-  branch = "master"
+  branch = "master",
+  location = "inst/precommit"
 )
 }
 \arguments{
@@ -15,6 +16,10 @@ add_precommit_hooks(
 
 \item{branch}{The branch of the remote repository from which the
 \code{.pre-commit-hooks.yaml} file should be copied.}
+
+\item{location}{Local location to store precommit hooks. Default is relative
+path within current directory, but it is advised to set an absolute path to a
+more general location (such as '~/bin/precommit').}
 }
 \description{
 Add precommit hooks from the \pkg{precommit} package, and modify to include
