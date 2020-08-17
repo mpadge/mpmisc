@@ -39,8 +39,8 @@ add_precommit_hooks <- function (url = "https://github.com/mpadge/mpmisc",
 }
 
 hooks_exist <- function (here) {
-    lf <- list.files (file.path (here, ".git", "hooks"))
-    any (grepl ("^pre-commit$", lf))
+    lf <- list.files (here, all.files = TRUE)
+    any (grepl ("^\\.pre-commit-config.yaml", lf))
 }
 
 grab_local_hooks <- function (url, branch, location, here) {

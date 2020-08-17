@@ -1,6 +1,6 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.0.0.019
+Version: 0.0.0.020
 Authors@R: 
     person(given = "Mark",
            family = "Padgham",
