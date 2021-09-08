@@ -5,17 +5,16 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "mpmisc",
-  "description": "Miscellaneous functions which I load in my\n    '.Rprofile'.",
+  "description": "Miscellaneous functions which I load in my '.Rprofile'.",
   "name": "mpmisc: Miscellaneous functions which I load in my '.Rprofile'",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.021",
+  "version": "0.0.0.22",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "4.0.1",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.1 (2020-06-06)",
+  "runtimePlatform": "R version 4.1.1 (2021-08-10)",
   "author": [
     {
       "@type": "Person",
@@ -101,6 +100,7 @@
   ],
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "readme": "https://github.com/mpadge/mpmisc/blob/master/README.md",
-  "fileSize": "4.72KB",
-  "issueTracker": "https://github.com/mpadge/mpmisc/issues"
+  "fileSize": "13.874KB",
+  "issueTracker": "https://github.com/mpadge/mpmisc/issues",
+  "contIntegration": "https://github.com/mpadge/mpmisc/actions"
 }
