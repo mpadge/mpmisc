@@ -4,12 +4,15 @@
 \alias{latest_comments}
 \title{Get latest comments from GitHub issues}
 \usage{
-latest_comments(user = "mpadge", n = 20)
+latest_comments(user = "mpadge", n = 20, open = TRUE)
 }
 \arguments{
 \item{user}{GitHub user name}
 
 \item{n}{Number of latest comments to fetch}
+
+\item{open}{If \code{TRUE}, only return comments from open issues, otherwise
+include closed issues too.}
 }
 \value{
 \code{data.frame} of commit data
