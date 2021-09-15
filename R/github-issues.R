@@ -13,6 +13,7 @@ get_qry <- function (gh_cli, user = "mpadge", n = 20)
                          issue {
                              number
                              repository {
+                                 name
                                  nameWithOwner
                              }
                          }
@@ -49,9 +50,11 @@ latest_comments <- function (user = "mpadge", n = 20) {
 
     out <- dat$data$user$issueComments$edges$node
     out <- data.frame (createdAt = out$createdAt,
-                       repository = out$issue$repository,
+                       name = out$issue$repository$name,
+                       nameWithOwner = out$issue$repository$nameWithOwner,
                        number = out$issue$number)
 
+    out$repo_issue <- paste0 (out$name, "#", out$number)
     out$org_repo_issue <- paste0 (out$nameWithOwner, "#", out$number)
     
     out$createdAt <- strptime (out$createdAt, "%Y-%m-%dT%H:%M:%SZ")
