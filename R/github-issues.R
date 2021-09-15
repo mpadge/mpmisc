@@ -76,3 +76,41 @@ latest_comments <- function (user = "mpadge", n = 20, open = TRUE) {
 
     return (out)
 }
+
+#' Open web browser to specified GitHub issue
+#'
+#' Open issue only with name of repo, or if no issue specified open main issues
+#' page of repo. This uses \link{latest_comments} to extract issues for
+#' specified user in order to associate repo name with the correct GitHub
+#' organization.
+#'
+#' @param repo Name of repo
+#' @param issue Optional number of issue
+#' @return Nothing
+#' @export
+open_gh_issue <- function (repo = NULL, issue = NULL, user = "mpadge") {
+
+    if (is.null (repo))
+        stop ("repo must be specified")
+    if (length (repo) > 1L)
+        stop ("only one repo may be specified")
+
+    cmts <- latest_comments (user = user, open = FALSE)
+    cmts <- cmts [which (cmts$name == repo), ]
+
+    url <- paste0 ("https://github.com/",
+                   cmts$nameWithOwner [1],
+                   "/issues")
+
+    if (!is.null (issue)) {
+
+        if (!is.numeric (issue))
+            stop ("issue must be a number")
+        if (length (issue) > 1L)
+            stop ("issue must be a single number")
+
+        url <- paste0 (url, "/", as.integer (issue))
+    }
+
+    browseURL (url = url)
+}
