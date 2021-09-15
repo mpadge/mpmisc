@@ -74,7 +74,29 @@ latest_comments <- function (user = "mpadge", n = 20, open = TRUE) {
 
     rownames (out) <- NULL
 
+    cache_comments (out)
+
     return (out)
+}
+
+cache_comments_file <- function () {
+
+    cache_dir <- rappdirs::user_cache_dir ("mpmisc")
+    if (!dir.exists (cache_dir))
+        dir.create (cache_dir, recursive = TRUE)
+
+    file.path (cache_dir, "latest_gh_comments.Rds")
+}
+
+
+cache_comments <- function (x) {
+
+    saveRDS (x, cache_comments_file ())
+}
+
+retrieve_cached_comments <- function () {
+
+    readRDS (cache_comments_file ())
 }
 
 #' Open web browser to specified GitHub issue
@@ -95,7 +117,11 @@ open_gh_issue <- function (repo = NULL, issue = NULL, user = "mpadge") {
     if (length (repo) > 1L)
         stop ("only one repo may be specified")
 
-    cmts <- latest_comments (user = user, open = FALSE)
+    cmts <- retrieve_cached_comments ()
+
+    if (!repo %in% cmts$name)
+        cmts <- latest_comments (user = user, open = FALSE)
+
     cmts <- cmts [which (cmts$name == repo), ]
 
     url <- paste0 ("https://github.com/",
