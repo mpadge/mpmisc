@@ -236,19 +236,32 @@ cache_notifications <- function (x) {
 #' @export
 open_gh_notification <- function (n) {
 
+    NC="\033[0m"
+    ARG="\033[0;31m" # red
+    TXT="\033[0;32m" # green, or 1;32m for light green
+    SYM="\u2192" # right arrow
+
     x <- readRDS (cache_notifications_file ())
 
-    if (length (x) == 0)
-        stop ("There are no new notifications.")
-    if (n > nrow (x))
-        stop ("There are not that many notifications")
+    if (length (x) == 0) {
 
-    x <- x [n, ]
+        msg <- paste0 (SYM, " ", TXT, "There are no new notifications.", NC)
+        message (msg)
 
-    url <- paste0 ("https://github.com/",
-                   x$repository,
-                   "/issues/",
-                   x$issue_num)
+    } else if (n > nrow (x)) {
 
-    browseURL (url = url)
+        msg <- paste0 (SYM, " ", TXT, "There are not that many notifications.", NC)
+        message (msg)
+
+    } else {
+
+        x <- x [n, ]
+
+        url <- paste0 ("https://github.com/",
+                       x$repository,
+                       "/issues/",
+                       x$issue_num)
+
+        browseURL (url = url)
+    }
 }
