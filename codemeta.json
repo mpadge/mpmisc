@@ -63,18 +63,6 @@
   "softwareRequirements": [
     {
       "@type": "SoftwareApplication",
-      "identifier": "cli",
-      "name": "cli",
-      "provider": {
-        "@id": "https://cran.r-project.org",
-        "@type": "Organization",
-        "name": "Comprehensive R Archive Network (CRAN)",
-        "url": "https://cran.r-project.org"
-      },
-      "sameAs": "https://CRAN.R-project.org/package=cli"
-    },
-    {
-      "@type": "SoftwareApplication",
       "identifier": "gert",
       "name": "gert",
       "provider": {
@@ -124,7 +112,7 @@
   ],
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "readme": "https://github.com/mpadge/mpmisc/blob/master/README.md",
-  "fileSize": "20.62KB",
+  "fileSize": "21.057KB",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "contIntegration": "https://github.com/mpadge/mpmisc/actions"
 }

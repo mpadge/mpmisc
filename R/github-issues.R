@@ -171,15 +171,26 @@ gh_notifications <- function (quiet = FALSE) {
 
     if (!quiet) {
 
-        cli::cli_ol ()
+        NC="\033[0m"
+        ARG="\033[0;31m" # red
+        TXT="\033[0;32m" # green, or 1;32m for light green
+        SYM="\u2192" # right arrow
+
+        n <- max (nchar (x$repository))
+        repo <- vapply (x$repository, function (i)
+                        paste0 (i, paste0 (rep (" ", n - nchar (i)),
+                                           collapse = "")),
+                        character (1))
 
         for (i in seq (nrow (x))) {
 
-            msg <- "{x$repository[i]}#{x$issue_num[i]}: {x$title[i]}"
-            cli::cli_li (msg)
+            msg <- paste0 (SYM, " ", ARG, repo[i], " #",
+                           x$issue_num [i], NC, ": ",
+                           TXT, x$title [i], NC)
+
+            message (msg)
         }
 
-        cli::cli_end ()
     }
 
     invisible (x)

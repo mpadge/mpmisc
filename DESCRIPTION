@@ -11,7 +11,6 @@ License: MIT + file LICENSE
 URL: https://github.com/mpadge/mpmisc
 BugReports: https://github.com/mpadge/mpmisc/issues
 Imports:
-    cli,
     gert,
     ghql,
     here,
