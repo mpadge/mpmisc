@@ -159,15 +159,18 @@ gh_notifications <- function (quiet = FALSE) {
         httr::content ("text") |>
         jsonlite::fromJSON ()
 
-    x$title <- x$subject$title
-    x$repository <- x$repository$full_name
-    s <- do.call (rbind, strsplit (x$subject$url, "/"))
-    x$issue_num <- as.integer (s [, ncol (s)])
-    x$type <- x$subject$subject.type
+    if (length (x) > 0L) {
 
-    x$subscription_url <- x$subject <- NULL
-    x$updated_at <- strptime (x$updated_at, "%Y-%m-%dT%H:%M:%SZ")
-    x$last_read_at <- strptime (x$last_read_at, "%Y-%m-%dT%H:%M:%SZ")
+        x$title <- x$subject$title
+        x$repository <- x$repository$full_name
+        s <- do.call (rbind, strsplit (x$subject$url, "/"))
+        x$issue_num <- as.integer (s [, ncol (s)])
+        x$type <- x$subject$subject.type
+
+        x$subscription_url <- x$subject <- NULL
+        x$updated_at <- strptime (x$updated_at, "%Y-%m-%dT%H:%M:%SZ")
+        x$last_read_at <- strptime (x$last_read_at, "%Y-%m-%dT%H:%M:%SZ")
+    }
 
     if (!quiet)
         notifications_to_screen (x)
@@ -184,18 +187,25 @@ notifications_to_screen <- function (x) {
     TXT="\033[0;32m" # green, or 1;32m for light green
     SYM="\u2192" # right arrow
 
-    n <- max (nchar (x$repository))
-    repo <- vapply (x$repository, function (i)
-                    paste0 (i, paste0 (rep (" ", n - nchar (i)),
-                                       collapse = "")),
-                    character (1))
+    if (length (x) > 0) {
 
-    for (i in seq (nrow (x))) {
+        n <- max (nchar (x$repository))
+        repo <- vapply (x$repository, function (i)
+                        paste0 (i, paste0 (rep (" ", n - nchar (i)),
+                                           collapse = "")),
+                        character (1))
 
-        msg <- paste0 (SYM, " ", ARG, repo[i], " #",
-                       x$issue_num [i], NC, ": ",
-                       TXT, x$title [i], NC)
+        for (i in seq (nrow (x))) {
 
+            msg <- paste0 (SYM, " ", ARG, repo[i], " #",
+                           x$issue_num [i], NC, ": ",
+                           TXT, x$title [i], NC)
+
+            message (msg)
+        }
+    } else {
+
+        msg <- paste0 (SYM, " ", TXT, "No new notifications.", NC)
         message (msg)
     }
 
