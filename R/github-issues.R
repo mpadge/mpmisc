@@ -168,7 +168,10 @@ gh_notifications <- function (quiet = FALSE) {
         x$title <- x$subject$title
         x$repository <- x$repository$full_name
         s <- do.call (rbind, strsplit (x$subject$url, "/"))
-        x$issue_num <- as.integer (s [, ncol (s)])
+        x$issue_num <- suppressWarnings (
+                    as.integer (s [, ncol (s)])
+                    )
+        x$issue_num [is.na (x$issue_num)] <- "commit"
         x$type <- x$subject$subject.type
 
         x$subscription_url <- x$subject <- NULL
