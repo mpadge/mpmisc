@@ -193,5 +193,16 @@ gh_notifications <- function (quiet = FALSE) {
 
     }
 
+    cache_notifications_file ()
+
     invisible (x)
+}
+
+cache_notifications_file <- function () {
+
+    cache_dir <- rappdirs::user_cache_dir ("mpmisc")
+    if (!dir.exists (cache_dir))
+        dir.create (cache_dir, recursive = TRUE)
+
+    file.path (cache_dir, "latest_gh_notifications.Rds")
 }
