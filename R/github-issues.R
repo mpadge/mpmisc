@@ -211,3 +211,28 @@ cache_notifications <- function (x) {
 
     saveRDS (x, cache_notifications_file ())
 }
+
+#' Open web browser to specified GitHub notification
+#'
+#' This accepts only the single parameter which corresponds to a number from the
+#' most recently extracted and cached notification list.
+#'
+#' @param number Number of notification as generated from
+#' \link{gh_notifications}
+#' @return Nothing
+#' @export
+open_gh_notification <- function (n) {
+
+    x <- readRDS (cache_notifications_file ())
+    if (n > nrow (x))
+        stop ("There are not that many notifications")
+
+    x <- x [n, ]
+
+    url <- paste0 ("https://github.com/",
+                   x$repository,
+                   "/issues/",
+                   x$issue_num)
+
+    browseURL (url = url)
+}
