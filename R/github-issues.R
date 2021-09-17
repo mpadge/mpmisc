@@ -140,3 +140,47 @@ open_gh_issue <- function (repo = NULL, issue = NULL, user = "mpadge") {
 
     browseURL (url = url)
 }
+
+#' Get latest unread github notifications
+#'
+#' @param quiet If `FALSE`, print notifications to screen
+#' @return `data.frame` of notifications (invisibly)
+#' @export
+gh_notifications <- function (quiet = FALSE) {
+
+    gh_tok <- Sys.getenv ("GITHUB_TOKEN")
+    auth <- paste ("Bearer", gh_tok, sep = " ")
+
+    u <- "https://api.github.com/notifications"
+
+    h <- httr::add_headers (Authorization = auth)
+
+    x <- httr::GET (u, h) |>
+        httr::content ("text") |>
+        jsonlite::fromJSON ()
+
+    x$title <- x$subject$title
+    x$repository <- x$repository$full_name
+    s <- do.call (rbind, strsplit (x$subject$url, "/"))
+    x$issue_num <- as.integer (s [, ncol (s)])
+    x$type <- x$subject$subject.type
+
+    x$subscription_url <- x$subject <- NULL
+    x$updated_at <- strptime (x$updated_at, "%Y-%m-%dT%H:%M:%SZ")
+    x$last_read_at <- strptime (x$last_read_at, "%Y-%m-%dT%H:%M:%SZ")
+
+    if (!quiet) {
+
+        cli::cli_ol ()
+
+        for (i in seq (nrow (x))) {
+
+            msg <- "{x$repository[i]}#{x$issue_num[i]}: {x$title[i]}"
+            cli::cli_li (msg)
+        }
+
+        cli::cli_end ()
+    }
+
+    invisible (x)
+}

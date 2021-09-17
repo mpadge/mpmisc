@@ -2,6 +2,7 @@
 
 export(add_git_remotes)
 export(add_precommit_hooks)
+export(gh_notifications)
 export(increment_dev_version)
 export(latest_comments)
 export(open_gh_issue)
