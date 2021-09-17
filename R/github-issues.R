@@ -169,33 +169,36 @@ gh_notifications <- function (quiet = FALSE) {
     x$updated_at <- strptime (x$updated_at, "%Y-%m-%dT%H:%M:%SZ")
     x$last_read_at <- strptime (x$last_read_at, "%Y-%m-%dT%H:%M:%SZ")
 
-    if (!quiet) {
-
-        NC="\033[0m"
-        ARG="\033[0;31m" # red
-        TXT="\033[0;32m" # green, or 1;32m for light green
-        SYM="\u2192" # right arrow
-
-        n <- max (nchar (x$repository))
-        repo <- vapply (x$repository, function (i)
-                        paste0 (i, paste0 (rep (" ", n - nchar (i)),
-                                           collapse = "")),
-                        character (1))
-
-        for (i in seq (nrow (x))) {
-
-            msg <- paste0 (SYM, " ", ARG, repo[i], " #",
-                           x$issue_num [i], NC, ": ",
-                           TXT, x$title [i], NC)
-
-            message (msg)
-        }
-
-    }
+    if (!quiet)
+        notifications_to_screen (x)
 
     cache_notifications (x)
 
     invisible (x)
+}
+
+notifications_to_screen <- function (x) {
+
+    NC="\033[0m"
+    ARG="\033[0;31m" # red
+    TXT="\033[0;32m" # green, or 1;32m for light green
+    SYM="\u2192" # right arrow
+
+    n <- max (nchar (x$repository))
+    repo <- vapply (x$repository, function (i)
+                    paste0 (i, paste0 (rep (" ", n - nchar (i)),
+                                       collapse = "")),
+                    character (1))
+
+    for (i in seq (nrow (x))) {
+
+        msg <- paste0 (SYM, " ", ARG, repo[i], " #",
+                       x$issue_num [i], NC, ": ",
+                       TXT, x$title [i], NC)
+
+        message (msg)
+    }
+
 }
 
 cache_notifications_file <- function () {
