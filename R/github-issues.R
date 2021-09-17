@@ -245,12 +245,13 @@ open_gh_notification <- function (n) {
 
     if (length (x) == 0) {
 
-        msg <- paste0 (SYM, " ", TXT, "There are no new notifications.", NC)
+        msg <- paste0 (SYM, " ", TXT, "There are no cached notifications.", NC)
         message (msg)
 
     } else if (n > nrow (x)) {
 
-        msg <- paste0 (SYM, " ", TXT, "There are not that many notifications.", NC)
+        msg <- paste0 (SYM, " ", TXT,
+                       "There are not that many cached notifications.", NC)
         message (msg)
 
     } else {
