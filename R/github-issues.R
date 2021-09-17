@@ -2,8 +2,10 @@
 # https://docs.github.com/en/graphql/reference/objects#user
 # https://docs.github.com/en/graphql/reference/objects#contributionscollection
 
-get_qry <- function (gh_cli, user = "mpadge", n = 20)
-{
+get_qry <- function (gh_cli, user = "mpadge", n = 20) {
+
+    # nolint start
+
     q <- paste0 ("{
         user(login:\"", user, "\") {
              issueComments (last:", n, ") {
@@ -24,8 +26,10 @@ get_qry <- function (gh_cli, user = "mpadge", n = 20)
             }
         }")
 
-    qry <- ghql::Query$new()
-    qry$query('user', q)
+    # nolint end
+
+    qry <- ghql::Query$new ()
+    qry$query ("user", q)
 
     return (qry)
 }
@@ -41,9 +45,11 @@ get_qry <- function (gh_cli, user = "mpadge", n = 20)
 latest_comments <- function (user = "mpadge", n = 20, open = TRUE) {
 
     token <- Sys.getenv("GITHUB_TOKEN")
+    auth <- paste0 ("Bearer ", token)
+
     gh_cli <- ghql::GraphqlClient$new (
                        url = "https://api.github.com/graphql",
-                       headers = list (Authorization = paste0 ("Bearer ", token))
+                       headers = list (Authorization = auth)
                         )
 
     qry <- get_qry (user = user, n = n * 5)
@@ -63,8 +69,8 @@ latest_comments <- function (user = "mpadge", n = 20, open = TRUE) {
 
     if (open)
         out <- out [which (!out$closed), ]
-    
-    out$createdAt <- strptime (out$createdAt, "%Y-%m-%dT%H:%M:%SZ")
+
+    out$createdAt <- strptime (out$createdAt, "%Y-%m-%dT%H:%M:%SZ") # nolint
 
     out <- out [order (out$createdAt, decreasing = TRUE), ]
 
@@ -189,10 +195,10 @@ gh_notifications <- function (quiet = FALSE) {
 
 notifications_to_screen <- function (x) {
 
-    NC="\033[0m"
-    ARG="\033[0;31m" # red
-    TXT="\033[0;32m" # green, or 1;32m for light green
-    SYM="\u2192" # right arrow
+    NC <- "\033[0m"                                            # nolint
+    ARG <- "\033[0;31m" # red                                  # nolint
+    TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
+    SYM <- "\u2192" # right arrow                              # nolint
 
     if (length (x) > 0) {
 
@@ -243,10 +249,10 @@ cache_notifications <- function (x) {
 #' @export
 open_gh_notification <- function (n) {
 
-    NC="\033[0m"
-    ARG="\033[0;31m" # red
-    TXT="\033[0;32m" # green, or 1;32m for light green
-    SYM="\u2192" # right arrow
+    NC <- "\033[0m"                                            # nolint
+    ARG <- "\033[0;31m" # red                                  # nolint
+    TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
+    SYM <- "\u2192" # right arrow                              # nolint
 
     x <- readRDS (cache_notifications_file ())
 
