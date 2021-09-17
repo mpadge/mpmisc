@@ -193,7 +193,7 @@ gh_notifications <- function (quiet = FALSE) {
 
     }
 
-    cache_notifications_file ()
+    cache_notifications (x)
 
     invisible (x)
 }
@@ -205,4 +205,9 @@ cache_notifications_file <- function () {
         dir.create (cache_dir, recursive = TRUE)
 
     file.path (cache_dir, "latest_gh_notifications.Rds")
+}
+
+cache_notifications <- function (x) {
+
+    saveRDS (x, cache_notifications_file ())
 }
