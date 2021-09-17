@@ -143,6 +143,10 @@ open_gh_issue <- function (repo = NULL, issue = NULL, user = "mpadge") {
 
 #' Get latest unread github notifications
 #'
+#' Not yet on graphql API:
+#' https://github.community/t/get-notification-list-via-graphql-api/13836
+#' but available on REST API:
+#' https://docs.github.com/en/rest/reference/activity#notifications
 #' @param quiet If `FALSE`, print notifications to screen
 #' @return `data.frame` of notifications (invisibly)
 #' @export
