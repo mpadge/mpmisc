@@ -237,6 +237,9 @@ cache_notifications <- function (x) {
 open_gh_notification <- function (n) {
 
     x <- readRDS (cache_notifications_file ())
+
+    if (length (x) == 0)
+        stop ("There are no new notifications.")
     if (n > nrow (x))
         stop ("There are not that many notifications")
 
