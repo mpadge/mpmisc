@@ -8,7 +8,7 @@
   "description": "Miscellaneous functions which I load in my '.Rprofile'.",
   "name": "mpmisc: Miscellaneous functions which I load in my '.Rprofile'",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.037",
+  "version": "0.0.0.38",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -112,7 +112,7 @@
   ],
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "readme": "https://github.com/mpadge/mpmisc/blob/master/README.md",
-  "fileSize": "21.329KB",
+  "fileSize": "24.886KB",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "contIntegration": "https://github.com/mpadge/mpmisc/actions"
 }
