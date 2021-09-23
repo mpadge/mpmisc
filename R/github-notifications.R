@@ -131,3 +131,18 @@ open_gh_notification <- function (n) {
         browseURL (url = url)
     }
 }
+
+#' Mark all new GitHub notifications as read and remove from list
+#'
+#' @export
+mark_gh_notifications_as_read <- function () {
+
+    gh_tok <- Sys.getenv ("GITHUB_TOKEN")
+    auth <- paste ("Bearer", gh_tok, sep = " ")
+
+    u <- "https://api.github.com/notifications"
+
+    h <- httr::add_headers (Authorization = auth)
+
+    x <- httr::PUT (u, h)
+}
