@@ -7,5 +7,7 @@
 mark_gh_notifications_as_read()
 }
 \description{
-Mark all new GitHub notifications as read and remove from list
+This does not remove them from the top of the most recent notifications list,
+but just marks them as read. There is currently no way to remove them from
+the list.
 }
