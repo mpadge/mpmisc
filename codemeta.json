@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.45",
+  "version": "0.0.0.46",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -107,7 +107,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "25.161KB",
+  "fileSize": "25.174KB",
   "readme": "https://github.com/mpadge/mpmisc/blob/master/README.md",
   "contIntegration": "https://github.com/mpadge/mpmisc/actions"
 }
