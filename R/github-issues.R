@@ -114,6 +114,7 @@ retrieve_cached_comments <- function () {
 #'
 #' @param repo Name of repo
 #' @param issue Optional number of issue
+#' @param user Optional name of user
 #' @return Nothing
 #' @export
 open_gh_issue <- function (repo = NULL, issue = NULL, user = "mpadge") {

@@ -10,6 +10,8 @@ open_gh_issue(repo = NULL, issue = NULL, user = "mpadge")
 \item{repo}{Name of repo}
 
 \item{issue}{Optional number of issue}
+
+\item{user}{Optional name of user}
 }
 \value{
 Nothing
