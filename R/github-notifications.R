@@ -95,7 +95,7 @@ cache_notifications <- function (x) {
 #' This accepts only the single parameter which corresponds to a number from the
 #' most recently extracted and cached notification list.
 #'
-#' @param number Number of notification as generated from
+#' @param n Number of notification as generated from
 #' \link{gh_notifications}
 #' @return Nothing
 #' @export
