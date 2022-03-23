@@ -128,7 +128,7 @@ open_gh_notification <- function (n) {
                        "/issues/",
                        x$issue_num)
 
-        browseURL (url = url)
+        utils::browseURL (url = url)
     }
 }
 

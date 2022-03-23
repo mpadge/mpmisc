@@ -144,5 +144,5 @@ open_gh_issue <- function (repo = NULL, issue = NULL, user = "mpadge") {
         url <- paste0 (url, "/", as.integer (issue))
     }
 
-    browseURL (url = url)
+    utils::browseURL (url = url)
 }
