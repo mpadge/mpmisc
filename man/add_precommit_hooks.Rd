@@ -6,7 +6,7 @@
 \usage{
 add_precommit_hooks(
   url = "https://github.com/mpadge/mpmisc",
-  branch = "master",
+  branch = "main",
   location = "inst/precommit"
 )
 }

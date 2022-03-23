@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.42",
+  "version": "0.0.0.043",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -105,7 +105,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=jsonlite"
     },
-    "SystemRequirements": null
+    "SystemRequirements": {}
   },
   "fileSize": "25.119KB",
   "readme": "https://github.com/mpadge/mpmisc/blob/master/README.md",

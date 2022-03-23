@@ -26,7 +26,7 @@
 #'
 #' @export
 add_precommit_hooks <- function (url = "https://github.com/mpadge/mpmisc",
-                                 branch = "master",
+                                 branch = "main",
                                  location = "inst/precommit") {
     requireNamespace ("precommit")
     here <- here::here ()
