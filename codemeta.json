@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.0.048",
+  "version": "0.0.0.053",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -105,9 +105,21 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=jsonlite"
     },
+    "5": {
+      "@type": "SoftwareApplication",
+      "identifier": "rappdirs",
+      "name": "rappdirs",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=rappdirs"
+    },
     "SystemRequirements": {}
   },
-  "fileSize": "25.174KB",
-  "readme": "https://github.com/mpadge/mpmisc/blob/master/README.md",
+  "fileSize": "25.197KB",
+  "readme": "https://github.com/mpadge/mpmisc/blob/main/README.md",
   "contIntegration": "https://github.com/mpadge/mpmisc/actions"
 }

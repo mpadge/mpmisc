@@ -7,7 +7,7 @@
 open_gh_notification(n)
 }
 \arguments{
-\item{number}{Number of notification as generated from
+\item{n}{Number of notification as generated from
 \link{gh_notifications}}
 }
 \value{
