@@ -1,6 +1,6 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.0.0.049
+Version: 0.0.0.050
 Authors@R: 
     person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"))
 Description: Miscellaneous functions which I load in my '.Rprofile'.
@@ -11,7 +11,8 @@ Imports:
     gert,
     ghql,
     here,
-    jsonlite
+    jsonlite,
+    rappdirs
 Suggests:
     httr,
     precommit
