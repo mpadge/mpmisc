@@ -25,10 +25,16 @@ gh_notifications <- function (quiet = FALSE) {
 
         x$title <- x$subject$title
         x$repository <- x$repository$full_name
-        s <- do.call (rbind, strsplit (x$subject$url, "/"))
-        x$issue_num <- suppressWarnings (
-                    as.integer (s [, ncol (s)])
-                    )
+        subject <- x$subject [which (!is.na (x$subject$url)), ]
+        x$issue_num <- ""
+        x$issue_num [which (is.na (x$subject$url))] <- "CheckSuite"
+        index <- which (!is.na (x$subject$url))
+        if (length (index) > 0L) {
+            s <- do.call (rbind, strsplit (x$subject$url [index], "/"))
+            x$issue_num [index] <- suppressWarnings (
+                as.integer (s [, ncol (s)])
+            )
+        }
         x$issue_num [is.na (x$issue_num)] <- "commit"
         x$type <- x$subject$subject.type
 
