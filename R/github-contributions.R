@@ -4,9 +4,10 @@
 #' @param quiet If `FALSE`, print notifications to screen
 #' @param ndays Number of preceding days for which contributions should be
 #' extracted.
+#' @param annual If `TRUE`, also show total annual commits.
 #' @return `data.frame` of calendar dates and contribution counts.
 #' @export
-gh_contributions <- function (quiet = FALSE, ndays = 7L) {
+gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
 
     q <- paste0 ("{
         user(login:\"mpadge\") {
@@ -42,7 +43,8 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L) {
 
     cc <- dat$data$user$contributionsCollection
 
-    #annual_total <- cc$contributionCalendar$totalContributions
+    annual_total <- cc$contributionCalendar$totalContributions
+
     calendar <- do.call (rbind, cc$contributionCalendar$weeks$contributionDays)
     calendar$date <- as.Date (calendar$date)
     calendar <- calendar [order (calendar$date, decreasing = TRUE), 1:2]
@@ -69,6 +71,11 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L) {
                      "  ", calendar$date [i], " ",
                      TXT, calendar$contributionCount [i])
         }
+    }
+
+    if (annual) {
+        message (TXT, "----", SYM, " ", TXT, " Total annual contributions: ",
+                 annual_total, NC)
     }
 
     invisible (calendar)
