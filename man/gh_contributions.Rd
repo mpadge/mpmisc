@@ -2,18 +2,19 @@
 % Please edit documentation in R/github-contributions.R
 \name{gh_contributions}
 \alias{gh_contributions}
-\title{Count GitHub contributions for current day}
+\title{Count GitHub contributions for previous range of days.}
 \usage{
-gh_contributions(quiet = FALSE, ndays = 5L)
+gh_contributions(quiet = FALSE, ndays = 7L)
 }
 \arguments{
 \item{quiet}{If \code{FALSE}, print notifications to screen}
 
-\item{ndays}{Number of preceding days for which contributions should be extracted.}
+\item{ndays}{Number of preceding days for which contributions should be
+extracted.}
 }
 \value{
 \code{data.frame} of calendar dates and contribution counts.
 }
 \description{
-Count GitHub contributions for current day
+Count GitHub contributions for previous range of days.
 }
