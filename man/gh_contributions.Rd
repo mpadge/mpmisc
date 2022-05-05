@@ -4,13 +4,15 @@
 \alias{gh_contributions}
 \title{Count GitHub contributions for previous range of days.}
 \usage{
-gh_contributions(quiet = FALSE, ndays = 7L)
+gh_contributions(quiet = FALSE, ndays = 7L, annual = TRUE)
 }
 \arguments{
 \item{quiet}{If \code{FALSE}, print notifications to screen}
 
 \item{ndays}{Number of preceding days for which contributions should be
 extracted.}
+
+\item{annual}{If \code{TRUE}, also show total annual commits.}
 }
 \value{
 \code{data.frame} of calendar dates and contribution counts.
