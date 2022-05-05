@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mpmisc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.004</span>
       </span>
     </div>
 
@@ -66,7 +66,6 @@
 <div class="page-header"><h1 id="mpmisc">mpmisc<a class="anchor" aria-label="anchor" href="#mpmisc"></a>
 </h1></div>
 <!-- badges: start -->
-
 <p>Miscellaneous R functions which I load in my <code>.Rprofile</code>, including functions to</p>
 <ul>
 <li>Increment development version</li>
@@ -87,16 +86,12 @@
 <h3 id="pre-commit-hooks">Pre-Commit Hooks<a class="anchor" aria-label="anchor" href="#pre-commit-hooks"></a>
 </h3>
 <p>I use the <a href="https://github.com/lorenzwalthert/precommit/" class="external-link"><code>precommit</code> package</a> to implement pre-commit hooks, including a personalised hook to ensure that the development version number has been incremented using the above <code><a href="reference/increment_dev_version.html">increment_dev_version()</a></code> function on each commit. This requires installing the <a href="https://pre-commit.com" class="external-link"><code>pre-commit</code> library</a>, and the <a href="https://github.com/lorenzwalthert/precommit/" class="external-link"><code>precommit</code> R package</a>. This repository then has both:</p>
-<ol style="list-style-type: decimal">
-<li>A version of <code>.pre-commit-config.yaml</code> modified from the original version in the <code>precommit</code> R package, primarily through the addition of:</li>
-</ol>
+<ol style="list-style-type: decimal"><li>A version of <code>.pre-commit-config.yaml</code> modified from the original version in the <code>precommit</code> R package, primarily through the addition of:</li></ol>
 <!-- end list --><div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span>   id<span class="sc">:</span> description version</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    name<span class="sc">:</span> Version has been incremeneted <span class="cf">in</span> DESCRIPTION</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    entry<span class="sc">:</span> inst<span class="sc">/</span>precommit<span class="sc">/</span>description</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    language<span class="sc">:</span> script</span></code></pre></div>
-<ol start="2" style="list-style-type: decimal">
-<li>The corresponding <code>inst/precommit/description</code> file which checks first that <code>DESCRIPTION</code> has been modified, and secondly that the modification includes a change to <code>"Version"</code>.</li>
-</ol>
+<ol start="2" style="list-style-type: decimal"><li>The corresponding <code>inst/precommit/description</code> file which checks first that <code>DESCRIPTION</code> has been modified, and secondly that the modification includes a change to <code>"Version"</code>.</li></ol>
 <p>In practice, my <code>description</code> hook lives in a general location at <code>~/bin/precommit/description</code> rather than within any particular repo, with the <code>entry</code> value reflecting this location.</p>
 </div>
 </div>
@@ -152,7 +147,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
