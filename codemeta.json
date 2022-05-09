@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.1.006",
+  "version": "0.0.1.7",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -107,6 +107,18 @@
     },
     "5": {
       "@type": "SoftwareApplication",
+      "identifier": "lubridate",
+      "name": "lubridate",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=lubridate"
+    },
+    "6": {
+      "@type": "SoftwareApplication",
       "identifier": "rappdirs",
       "name": "rappdirs",
       "provider": {
@@ -117,9 +129,9 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rappdirs"
     },
-    "SystemRequirements": {}
+    "SystemRequirements": null
   },
-  "fileSize": "26.432KB",
+  "fileSize": "30.089KB",
   "readme": "https://github.com/mpadge/mpmisc/blob/main/README.md",
   "contIntegration": "https://github.com/mpadge/mpmisc/actions"
 }
