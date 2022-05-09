@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.1.7",
+  "version": "0.0.1.008",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -129,7 +129,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rappdirs"
     },
-    "SystemRequirements": null
+    "SystemRequirements": {}
   },
   "fileSize": "30.089KB",
   "readme": "https://github.com/mpadge/mpmisc/blob/main/README.md",
