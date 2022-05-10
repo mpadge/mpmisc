@@ -1,14 +1,16 @@
 
 #' Grab random pixabay image for leftwm background
 #'
+#' @param category Pixabay category from list at
+#' \url{https://pixabay.com/api/docs/#api_search_images}.
 #' @export
-pixabay <- function () {
+pixabay <- function (category = "buildings") {
 
     key <- Sys.getenv ("PIXABAY")
     u <- paste0 ("https://pixabay.com/api/?key=",
                  key, "&image_type=photo&order=latest&per_page=100",
-                 #"&orientation=horizontal&category=buildings|places",
-                 "&orientation=horizontal&category=buildings",
+                 "&orientation=horizontal&category=",
+                 category,
                  "&editors_choice=true")
     x <- jsonlite::fromJSON (u)
     imgs <- x$hits$largeImageURL
