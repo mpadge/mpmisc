@@ -4,7 +4,11 @@
 \alias{pixabay}
 \title{Grab random pixabay image for leftwm background}
 \usage{
-pixabay()
+pixabay(category = "buildings")
+}
+\arguments{
+\item{category}{Pixabay category from list at
+\url{https://pixabay.com/api/docs/#api_search_images}.}
 }
 \description{
 Grab random pixabay image for leftwm background
