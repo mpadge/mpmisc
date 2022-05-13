@@ -20,3 +20,26 @@ pixabay <- function (category = "buildings") {
 
     system2 ("leftwm", args = list ("command", "SoftReload"))
 }
+
+#' Grab random local image for leftwm background
+#'
+#' Local directory is specified in envvar 'PIX_LOCAL_DIR'
+#' @export
+pix_local <- function () {
+
+    key <- Sys.getenv ("PIX_LOCAL_DIR")
+    if (!nzchar (key)) {
+        stop ("Enivronment variable 'PIX_LOCAL_DIR' must be specified.",
+              call. = FALSE)
+    }
+    if (!dir.exists (key)) {
+        stop ("Directory [", key, "] does not exist.",
+              call. = FALSE)
+    }
+    f_new <- sample (list.files (key, full.names = TRUE), 1L)
+
+    f <- normalizePath ("~/.config/leftwm/themes/Garden/background.jpg")
+    file.copy (f_new, f, overwrite = TRUE)
+
+    system2 ("leftwm", args = list ("command", "SoftReload"))
+}
