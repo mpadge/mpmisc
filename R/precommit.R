@@ -45,8 +45,8 @@ hooks_exist <- function (here) {
 
 grab_local_hooks <- function (url, branch, location, here) {
     u <- paste0 (gsub ("/$", "", url),
-                 "/raw/",
-                 branch,
+                 "/raw/main",
+                 #branch,
                  "/.pre-commit-config.yaml")
     x <- httr::GET (u)
     if (x$status_code != 200)
