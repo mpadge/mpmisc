@@ -90,8 +90,8 @@ add_to_rbuildignore <- function (here) {
 }
 
 download_hook <- function (url, branch, here) {
-    fp <- file.path (here, "inst", "precommit")
-    if (!file.exists (fp))
+    fp <- file.path (here, ".hooks")
+    if (!dir.exists (fp))
         dir.create (fp, recursive = TRUE)
 
     f <- file.path (fp, "description")
