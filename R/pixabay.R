@@ -16,7 +16,7 @@ pixabay <- function (category = "buildings") {
     imgs <- x$hits$largeImageURL
 
     f <- normalizePath ("~/.config/leftwm/themes/Garden/background.jpg")
-    download.file (sample (imgs, 1L), f, quiet = TRUE)
+    utils::download.file (sample (imgs, 1L), f, quiet = TRUE)
 
     system2 ("leftwm", args = list ("command", "SoftReload"))
 }
