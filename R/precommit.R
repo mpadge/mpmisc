@@ -27,7 +27,7 @@
 #' @export
 add_precommit_hooks <- function (url = "https://github.com/mpadge/mpmisc",
                                  branch = gert::git_branch (),
-                                 location = "inst/precommit") {
+                                 location = ".hooks/") {
     requireNamespace ("precommit")
     here <- here::here ()
 
@@ -68,11 +68,11 @@ grab_local_hooks <- function (url, branch, location, here) {
 }
 
 sub_location <- function (x, location) {
-    loc_default <- "inst/precommit"
+    loc_default <- ".hooks/"
     if (location != loc_default) {
-        i <- grep (loc_default, x)
+        i <- grep (loc_default, x, fixed = TRUE)
         x_start <- paste0 (strsplit (x [i], ":") [[1]] [1], ": ")
-        x [i] <- paste0 (x_start, location, "/description")
+        x [i] <- paste0 (x_start, location, "description")
     }
     return (x)
 }
