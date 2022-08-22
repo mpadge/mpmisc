@@ -41,10 +41,15 @@ write_makevars <- function () {
         # Insert gdb line into Makevars:
         x <- readLines (makevars)
         i <- grep ("^PKG\\_CPPFLAGS", x) [1]
-        x [i] <- paste0 (x [i], " -UDEBUG -g")
-        writeLines (x, makevars)
 
-        message ("'Makevars' has been modified; revert changes after debugging")
+        if (!grepl ("-UDEBUG -g", x [i], fixed = TRUE)) {
+
+            x [i] <- paste0 (x [i], " -UDEBUG -g")
+            writeLines (x, makevars)
+            message (
+                "'Makevars' has been modified; revert changes after debugging"
+            )
+        }
 
     } else {
 
