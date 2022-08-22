@@ -3,16 +3,15 @@
 #' Note that no path arguments are used or recognised, and this function can
 #' only be called and used in the current working directory.
 #'
-#' @param script Name of R script to be run for debugging.
 #' @return Nothing; calling this will start the 'gdb' debugger on the nominated
 #' script.
 #' @export
-gdb <- function (script = "script.R") {
+gdb <- function () {
 
     write_makevars ()
 
     #message ("Starting gdb ...")
-    cmd <- paste0 ("R -d gdb -e 'source(\"", script, "\")'")
+    #cmd <- paste0 ("R -d gdb -e 'source(\"", script, "\")'")
     #system (cmd)
     # -> gdb must be called directly from terminal
 }

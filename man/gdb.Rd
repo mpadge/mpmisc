@@ -4,10 +4,7 @@
 \alias{gdb}
 \title{Configure an R package path for debugging with 'gdb'}
 \usage{
-gdb(script = "script.R")
-}
-\arguments{
-\item{script}{Name of R script to be run for debugging.}
+gdb()
 }
 \value{
 Nothing; calling this will start the 'gdb' debugger on the nominated
