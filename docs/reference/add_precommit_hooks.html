@@ -21,7 +21,7 @@ version at the specified 'url'."><!-- mathjax --><script src="https://cdnjs.clou
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mpmisc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.017</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1.020</span>
       </span>
     </div>
 
@@ -58,11 +58,11 @@ version at the specified 'url'.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">add_precommit_hooks</span><span class="op">(</span>
-  url <span class="op">=</span> <span class="st">"https://github.com/mpadge/mpmisc"</span>,
-  branch <span class="op">=</span> <span class="fu">gert</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/gert/reference/git_branch.html" class="external-link">git_branch</a></span><span class="op">(</span><span class="op">)</span>,
-  location <span class="op">=</span> <span class="st">".hooks/"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_precommit_hooks</span><span class="op">(</span></span>
+<span>  url <span class="op">=</span> <span class="st">"https://github.com/mpadge/mpmisc"</span>,</span>
+<span>  branch <span class="op">=</span> <span class="fu">gert</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/gert/reference/git_branch.html" class="external-link">git_branch</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  location <span class="op">=</span> <span class="st">".hooks/"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,13 +70,18 @@ version at the specified 'url'.</p>
     <dl><dt>url</dt>
 <dd><p>The location of a repository containing the desired
 '.pre-commit-hooks.yaml' file to be installed in the local repository.</p></dd>
+
+
 <dt>branch</dt>
 <dd><p>The branch of the remote repository from which the
 <code>.pre-commit-hooks.yaml</code> file should be copied.</p></dd>
+
+
 <dt>location</dt>
 <dd><p>Local location to store precommit hooks. Default is relative
 path within current directory, but it is advised to set an absolute path to a
 more general location (such as '~/bin/precommit').</p></dd>
+
 </dl></div>
     <div id="note">
     <h2>Note</h2>
@@ -102,7 +107,7 @@ u_x description'.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
