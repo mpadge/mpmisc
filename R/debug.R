@@ -27,7 +27,7 @@ write_makevars <- function () {
         stop ("Directory has no 'src' sub-directory")
     }
 
-    makevars <- grep (paste0 ("src\\", .Platform$file.sep, "[Mm]akevars"),
+    makevars <- grep (paste0 ("src\\", .Platform$file.sep, "[Mm]akevars$"),
                       flist,
                       fixed = FALSE,
                       value = TRUE)
