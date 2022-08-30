@@ -1,12 +1,12 @@
-#' Configure an R package path for debugging with 'gdb'
+#' Configure an R package path for debugging with 'gdb' or 'lldb'
 #'
 #' Note that no path arguments are used or recognised, and this function can
 #' only be called and used in the current working directory.
 #'
-#' @return Nothing; calling this will start the 'gdb' debugger on the nominated
-#' script.
+#' @return Nothing; this just modifies or writes a 'Makevars' script. The
+#' debugger can then be started with a single extra command.
 #' @export
-gdb <- function () {
+debug <- function () {
 
     write_makevars ()
 
