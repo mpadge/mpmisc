@@ -136,7 +136,8 @@ gh_daily_contributions <- function (day = 0L, quiet = FALSE) {
     TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
     SYM <- "\u2192" # right arrow                              # nolint
 
-    msg <- paste0 (TXT, "Commit contributions for ", weekday, " ", target_date, ":", NC)
+    msg <- paste0 (TXT, "----", SYM,
+        " Commit contributions for ", weekday, " ", target_date, ":", NC)
     message (msg)
 
     for (i in seq (nrow (dat ))) {
