@@ -127,6 +127,10 @@ gh_daily_contributions <- function (day = 0L, quiet = FALSE) {
     target_date <- today - day
     
     dat <- dat [which (dates == target_date), ]
+    if (nrow (dat) == 0L) {
+        return (NULL)
+    }
+
     weekday <- as.character (lubridate::wday (
         target_date, label = TRUE, abbr = TRUE))
 
