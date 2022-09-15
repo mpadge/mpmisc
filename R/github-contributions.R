@@ -80,3 +80,69 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
 
     invisible (calendar)
 }
+
+#' Details of GitHub contributions for particular day
+#'
+#' @param day 0 for today; 1 for yesterday, and so on.
+#' @param quiet If `FALSE`, print notifications to screen
+#' @return `data.frame` of repositories and contribution counts.
+#' @export
+gh_daily_contributions <- function (day = 0L, quiet = FALSE) {
+
+    q <- paste0 ("{
+        user(login:\"mpadge\") {
+             contributionsCollection {
+                 commitContributionsByRepository {
+                     contributions (last: 100) {
+                         nodes {
+                             commitCount
+                             occurredAt
+                             repository {
+                                 name
+                             }
+                         } 
+                     }
+                 }
+             }
+        }
+    }")
+
+    qry <- ghql::Query$new()
+    qry$query('user', q)
+
+    token <- Sys.getenv("GITHUB_TOKEN") # or whatever
+    gh_cli <- ghql::GraphqlClient$new (
+                       url = "https://api.github.com/graphql",
+                       headers = list (Authorization = paste0 ("Bearer ", token))
+                        )
+    dat <- gh_cli$exec(qry$queries$user) |>
+        jsonlite::fromJSON (flatten = TRUE)
+    dat <- dat$data$user$contributionsCollection
+    dat <- dat$commitContributionsByRepository$contributions.nodes
+
+    dat <- do.call (rbind, dat)
+
+    dates <- lubridate::ymd (as.Date (dat$occurredAt))
+    today <- lubridate::ymd (as.Date (Sys.time ()))
+    target_date <- today - day
+    
+    dat <- dat [which (dates == target_date), ]
+    weekday <- as.character (lubridate::wday (
+        target_date, label = TRUE, abbr = TRUE))
+
+    # screen output stuff:
+    NC <- "\033[0m"                                            # nolint
+    ARG <- "\033[0;31m" # red                                  # nolint
+    TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
+    SYM <- "\u2192" # right arrow                              # nolint
+
+    msg <- paste0 (TXT, "Commit contributions for ", weekday, " ", target_date, ":", NC)
+    message (msg)
+
+    for (i in seq (nrow (dat ))) {
+        message ("   ", ARG, dat$repository.name [i],
+                 "  ", TXT, dat$commitCount [i])
+    }
+
+    invisible (dat)
+}
