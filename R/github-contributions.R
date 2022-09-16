@@ -1,13 +1,4 @@
-
-#' Count GitHub contributions for previous range of days.
-#'
-#' @param quiet If `FALSE`, print notifications to screen
-#' @param ndays Number of preceding days for which contributions should be
-#' extracted.
-#' @param annual If `TRUE`, also show total annual commits.
-#' @return `data.frame` of calendar dates and contribution counts.
-#' @export
-gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
+gh_contrib_query <- function () {
 
     q <- paste0 ("{
         user(login:\"mpadge\") {
@@ -26,9 +17,33 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
                          }
                      }
                  }
+                 commitContributionsByRepository {
+                     contributions (last: 100) {
+                         nodes {
+                             commitCount
+                             occurredAt
+                             repository {
+                                 name
+                             }
+                         } 
+                     }
+                 }
              }
         }
     }")
+}
+
+#' Count GitHub contributions for previous range of days.
+#'
+#' @param quiet If `FALSE`, print notifications to screen
+#' @param ndays Number of preceding days for which contributions should be
+#' extracted.
+#' @param annual If `TRUE`, also show total annual commits.
+#' @return `data.frame` of calendar dates and contribution counts.
+#' @export
+gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
+
+    q <- gh_contrib_query ()
 
     qry <- ghql::Query$new()
     qry$query("user", q)
@@ -78,6 +93,8 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
                  annual_total, NC)
     }
 
+    gh_daily_contributions ()
+
     invisible (calendar)
 }
 
@@ -89,23 +106,7 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
 #' @export
 gh_daily_contributions <- function (day = 0L, quiet = FALSE) {
 
-    q <- paste0 ("{
-        user(login:\"mpadge\") {
-             contributionsCollection {
-                 commitContributionsByRepository {
-                     contributions (last: 100) {
-                         nodes {
-                             commitCount
-                             occurredAt
-                             repository {
-                                 name
-                             }
-                         } 
-                     }
-                 }
-             }
-        }
-    }")
+    q <- gh_contrib_query ()
 
     qry <- ghql::Query$new()
     qry$query('user', q)
