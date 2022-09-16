@@ -80,7 +80,7 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
 
         message (msg)
     } else {
-        message (TXT, "----", SYM, " Daily numbers of contributions:", NC)
+        message (TXT, "----", SYM, "  Daily numbers of contributions:", NC)
         for (i in seq (ndays)) {
             message ("   ", ARG, calendar$weekday [i],
                      "  ", calendar$date [i], " ",
@@ -93,9 +93,57 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
                  annual_total, NC)
     }
 
-    gh_daily_contributions ()
+    out <- gh_daily_intern (dat)
+    gh_daily_print (out)
 
     invisible (calendar)
+}
+
+gh_daily_intern <- function (dat, day = 0L) {
+
+    dat <- dat$data$user$contributionsCollection
+    dat <- dat$commitContributionsByRepository$contributions$nodes
+    # last column is still 'repository$name', so have to unlist that
+    dat <- lapply (dat, function (i) {
+        i$repository <- i$repository$name
+        names (i) [which (names (i) == "repository")] <- "name"
+        return (i)
+    })
+
+    dat <- do.call (rbind, dat)
+
+    dates <- lubridate::ymd (as.Date (dat$occurredAt))
+    today <- lubridate::ymd (as.Date (Sys.time ()))
+    target_date <- today - day
+    
+    weekday <- as.character (lubridate::wday (
+        target_date, label = TRUE, abbr = TRUE))
+
+    dat <- dat [which (dates == target_date), ]
+
+    return (list (
+        dat = dat,
+        target_date = target_date,
+        weekday = weekday
+    ))
+}
+
+gh_daily_print <- function (dat) {
+
+    # screen output stuff:
+    NC <- "\033[0m"                                            # nolint
+    ARG <- "\033[0;31m" # red                                  # nolint
+    TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
+    SYM <- "\u2192" # right arrow                              # nolint
+
+    msg <- paste0 (TXT, "----", SYM,
+        "  Commit contributions for ", dat$weekday, " ", dat$target_date, ":", NC)
+    message (msg)
+
+    for (i in seq (nrow (dat$dat ))) {
+        message ("   ", ARG, dat$dat$name [i],
+                 "  ", TXT, dat$dat$commitCount [i])
+    }
 }
 
 #' Details of GitHub contributions for particular day
@@ -118,37 +166,14 @@ gh_daily_contributions <- function (day = 0L, quiet = FALSE) {
                         )
     dat <- gh_cli$exec(qry$queries$user) |>
         jsonlite::fromJSON (flatten = TRUE)
-    dat <- dat$data$user$contributionsCollection
-    dat <- dat$commitContributionsByRepository$contributions.nodes
 
-    dat <- do.call (rbind, dat)
-
-    dates <- lubridate::ymd (as.Date (dat$occurredAt))
-    today <- lubridate::ymd (as.Date (Sys.time ()))
-    target_date <- today - day
+    out <- gh_daily_intern (dat)
     
-    dat <- dat [which (dates == target_date), ]
-    if (nrow (dat) == 0L) {
+    if (nrow (out$dat) == 0L) {
         return (NULL)
     }
 
-    weekday <- as.character (lubridate::wday (
-        target_date, label = TRUE, abbr = TRUE))
+    gh_daily_print (out)
 
-    # screen output stuff:
-    NC <- "\033[0m"                                            # nolint
-    ARG <- "\033[0;31m" # red                                  # nolint
-    TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
-    SYM <- "\u2192" # right arrow                              # nolint
-
-    msg <- paste0 (TXT, "----", SYM,
-        " Commit contributions for ", weekday, " ", target_date, ":", NC)
-    message (msg)
-
-    for (i in seq (nrow (dat ))) {
-        message ("   ", ARG, dat$repository.name [i],
-                 "  ", TXT, dat$commitCount [i])
-    }
-
-    invisible (dat)
+    invisible (out$dat)
 }
