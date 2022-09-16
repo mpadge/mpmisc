@@ -80,7 +80,7 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
 
         message (msg)
     } else {
-        message (TXT, "----", SYM, " Daily numbers of contributions:", NC)
+        message (TXT, "----", SYM, "  Daily numbers of contributions:", NC)
         for (i in seq (ndays)) {
             message ("   ", ARG, calendar$weekday [i],
                      "  ", calendar$date [i], " ",
@@ -137,7 +137,7 @@ gh_daily_print <- function (dat) {
     SYM <- "\u2192" # right arrow                              # nolint
 
     msg <- paste0 (TXT, "----", SYM,
-        " Commit contributions for ", dat$weekday, " ", dat$target_date, ":", NC)
+        "  Commit contributions for ", dat$weekday, " ", dat$target_date, ":", NC)
     message (msg)
 
     for (i in seq (nrow (dat$dat ))) {
