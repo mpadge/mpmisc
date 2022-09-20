@@ -54,7 +54,7 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
         headers = list (Authorization = paste0 ("Bearer ", token))
     )
     dat <- gh_cli$exec(qry$queries$user) |>
-        jsonlite::fromJSON ()
+        jsonlite::fromJSON (flatten = TRUE)
 
     cc <- dat$data$user$contributionsCollection
 
@@ -101,11 +101,24 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
 
 gh_daily_intern <- function (dat, day = 0L) {
 
+    # The names of the results are sometimes inconsistent here, with some
+    # results returning nested lists of `contributions$nodes`, and other times a
+    # single name of `contributions.nodes`
+
     dat <- dat$data$user$contributionsCollection
-    dat <- dat$commitContributionsByRepository$contributions$nodes
+    dat <- dat$commitContributionsByRepository
+    if ("contributions" %in% names (dat)) {
+        dat <- dat$contributions$nodes
+    } else {
+        dat <- dat$contributions.nodes
+    }
     # last column is still 'repository$name', so have to unlist that
     dat <- lapply (dat, function (i) {
-        i$repository <- i$repository$name
+        if ("repository" %in% names (i)) {
+            i$repository <- i$repository$name
+        } else {
+            names (i) [which (names (i) == "repository.name")] <- "repository"
+        }
         names (i) [which (names (i) == "repository")] <- "name"
         return (i)
     })
@@ -119,7 +132,7 @@ gh_daily_intern <- function (dat, day = 0L) {
     weekday <- as.character (lubridate::wday (
         target_date, label = TRUE, abbr = TRUE))
 
-    dat <- dat [which (dates == target_date), ]
+    dat <- dat [which (dates == target_date), , drop = FALSE]
 
     return (list (
         dat = dat,
