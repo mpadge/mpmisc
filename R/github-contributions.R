@@ -24,6 +24,7 @@ gh_contrib_query <- function () {
                              occurredAt
                              repository {
                                  name
+                                 nameWithOwner
                              }
                          } 
                      }
@@ -114,11 +115,7 @@ gh_daily_intern <- function (dat, day = 0L) {
     }
     # last column is still 'repository$name', so have to unlist that
     dat <- lapply (dat, function (i) {
-        if ("repository" %in% names (i)) {
-            i$repository <- i$repository$name
-        } else {
-            names (i) [which (names (i) == "repository.name")] <- "repository"
-        }
+        names (i) [which (names (i) == "repository.nameWithOwner")] <- "repository"
         names (i) [which (names (i) == "repository")] <- "name"
         return (i)
     })
