@@ -184,7 +184,7 @@ gh_daily_contributions <- function (day = 0L, quiet = FALSE) {
     dat <- gh_cli$exec(qry$queries$user) |>
         jsonlite::fromJSON (flatten = TRUE)
 
-    out <- gh_daily_intern (dat)
+    out <- gh_daily_intern (dat, day = day)
     
     if (nrow (out$dat) == 0L) {
         return (NULL)
