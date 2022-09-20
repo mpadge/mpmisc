@@ -130,6 +130,10 @@ gh_daily_intern <- function (dat, day = 0L) {
 
 gh_daily_print <- function (dat) {
 
+    if (nrow (dat$dat) == 0L) {
+        return (NULL)
+    }
+
     # screen output stuff:
     NC <- "\033[0m"                                            # nolint
     ARG <- "\033[0;31m" # red                                  # nolint
