@@ -26,7 +26,7 @@ gh_contrib_query <- function () {
                                  name
                                  nameWithOwner
                              }
-                         } 
+                         }
                      }
                  }
              }
@@ -46,15 +46,15 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
 
     q <- gh_contrib_query ()
 
-    qry <- ghql::Query$new()
-    qry$query("user", q)
+    qry <- ghql::Query$new ()
+    qry$query ("user", q)
 
-    token <- Sys.getenv("GITHUB_TOKEN") # or whatever
+    token <- Sys.getenv ("GITHUB_TOKEN") # or whatever
     gh_cli <- ghql::GraphqlClient$new (
         url = "https://api.github.com/graphql",
         headers = list (Authorization = paste0 ("Bearer ", token))
     )
-    dat <- gh_cli$exec(qry$queries$user) |>
+    dat <- gh_cli$exec (qry$queries$user) |>
         jsonlite::fromJSON (flatten = TRUE)
 
     cc <- dat$data$user$contributionsCollection
@@ -65,33 +65,40 @@ gh_contributions <- function (quiet = FALSE, ndays = 7L, annual = TRUE) {
     calendar$date <- as.Date (calendar$date)
     calendar <- calendar [order (calendar$date, decreasing = TRUE), 1:2]
     calendar$weekday <- as.character (lubridate::wday (calendar$date,
-                                                       label = TRUE,
-                                                       abbr = TRUE))
+        label = TRUE,
+        abbr = TRUE
+    ))
 
     # screen output stuff:
-    NC <- "\033[0m"                                            # nolint
+    NC <- "\033[0m" # nolint
     ARG <- "\033[0;31m" # red                                  # nolint
     TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
     SYM <- "\u2192" # right arrow                              # nolint
 
     if (ndays == 1L) {
-        msg <- paste0 (SYM, " ", ARG, calendar$contributionCount [1],
-                       TXT, " daily contributions (",
-                       Sys.Date (), ")", NC)
+        msg <- paste0 (
+            SYM, " ", ARG, calendar$contributionCount [1],
+            TXT, " daily contributions (",
+            Sys.Date (), ")", NC
+        )
 
         message (msg)
     } else {
         message (TXT, "----", SYM, "  Daily numbers of contributions:", NC)
         for (i in seq (ndays)) {
-            message ("   ", ARG, calendar$weekday [i],
-                     "  ", calendar$date [i], " ",
-                     TXT, calendar$contributionCount [i])
+            message (
+                "   ", ARG, calendar$weekday [i],
+                "  ", calendar$date [i], " ",
+                TXT, calendar$contributionCount [i]
+            )
         }
     }
 
     if (annual) {
-        message (TXT, "----", SYM, " ", TXT, " Total annual contributions: ",
-                 annual_total, NC)
+        message (
+            TXT, "----", SYM, " ", TXT, " Total annual contributions: ",
+            annual_total, NC
+        )
     }
 
     out <- gh_daily_intern (dat)
@@ -125,9 +132,11 @@ gh_daily_intern <- function (dat, day = 0L) {
     dates <- lubridate::ymd (as.Date (dat$occurredAt))
     today <- lubridate::ymd (as.Date (Sys.time ()))
     target_date <- today - day
-    
+
     weekday <- as.character (lubridate::wday (
-        target_date, label = TRUE, abbr = TRUE))
+        target_date,
+        label = TRUE, abbr = TRUE
+    ))
 
     dat <- dat [which (dates == target_date), , drop = FALSE]
 
@@ -145,18 +154,22 @@ gh_daily_print <- function (dat) {
     }
 
     # screen output stuff:
-    NC <- "\033[0m"                                            # nolint
+    NC <- "\033[0m" # nolint
     ARG <- "\033[0;31m" # red                                  # nolint
     TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
     SYM <- "\u2192" # right arrow                              # nolint
 
-    msg <- paste0 (TXT, "----", SYM,
-        "  Commit contributions for ", dat$weekday, " ", dat$target_date, ":", NC)
+    msg <- paste0 (
+        TXT, "----", SYM,
+        "  Commit contributions for ", dat$weekday, " ", dat$target_date, ":", NC
+    )
     message (msg)
 
-    for (i in seq (nrow (dat$dat ))) {
-        message ("   ", ARG, dat$dat$name [i],
-                 "  ", TXT, dat$dat$commitCount [i])
+    for (i in seq (nrow (dat$dat))) {
+        message (
+            "   ", ARG, dat$dat$name [i],
+            "  ", TXT, dat$dat$commitCount [i]
+        )
     }
 }
 
@@ -170,19 +183,19 @@ gh_daily_contributions <- function (day = 0L, quiet = FALSE) {
 
     q <- gh_contrib_query ()
 
-    qry <- ghql::Query$new()
-    qry$query('user', q)
+    qry <- ghql::Query$new ()
+    qry$query ("user", q)
 
-    token <- Sys.getenv("GITHUB_TOKEN") # or whatever
+    token <- Sys.getenv ("GITHUB_TOKEN") # or whatever
     gh_cli <- ghql::GraphqlClient$new (
-                       url = "https://api.github.com/graphql",
-                       headers = list (Authorization = paste0 ("Bearer ", token))
-                        )
-    dat <- gh_cli$exec(qry$queries$user) |>
+        url = "https://api.github.com/graphql",
+        headers = list (Authorization = paste0 ("Bearer ", token))
+    )
+    dat <- gh_cli$exec (qry$queries$user) |>
         jsonlite::fromJSON (flatten = TRUE)
 
     out <- gh_daily_intern (dat, day = day)
-    
+
     if (nrow (out$dat) == 0L) {
         return (NULL)
     }
