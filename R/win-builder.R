@@ -35,7 +35,7 @@ win_builder_checks <- function () {
     }
 }
 
-tar_from_desc <- function (path) {
+tar_from_desc <- function (here) {
 
     desc <- normalizePath (file.path (here, "DESCRIPTION"))
     if (!file.exists (desc)) {
