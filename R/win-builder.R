@@ -24,12 +24,12 @@ win_builder_checks <- function () {
 
         url <- paste0 (url_base, v, "/", path_tar_file)
         con <- file (path_tar, open = "rb")
-        on.exit (close (con), add = TRUE)
         h <- curl::new_handle (upload = TRUE, filetime = FALSE)
         curl::handle_setopt (h, readfunction = function (n) {
             readBin (con, raw (), n = n)
         }, verbose = FALSE)
         out <- curl::curl_fetch_memory (url, handle = h)
+        close (con)
 
         message ("Uploaded ", v)
     }
