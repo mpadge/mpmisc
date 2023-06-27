@@ -11,8 +11,11 @@ win_builder_checks <- function () {
     setwd (here)
 
     build_dir <- normalizePath (file.path (here, ".."))
-    path_tar <- pkgbuild::build (here, build_dir)
-    path_tar_file <- basename (path_tar)
+    path_tar_file <- file.path (build_dir, tar_from_desc (here))
+    if (!file.exists (path_tar_file)) {
+        path_tar <- pkgbuild::build (here, build_dir)
+        path_tar_file <- basename (path_tar)
+    }
 
     url_base <- "ftp://win-builder.r-project.org/"
     versions <- c ("R-oldrelease", "R-release", "R-devel")
@@ -30,4 +33,18 @@ win_builder_checks <- function () {
 
         message ("Uploaded ", v)
     }
+}
+
+tar_from_desc <- function (path) {
+
+    desc <- normalizePath (file.path (here, "DESCRIPTION"))
+    if (!file.exists (desc)) {
+        stop ("Not an R package", call. = FALSE)
+    }
+
+    desc <- data.frame (read.dcf (desc))
+    pkg <- desc$Package
+    v <- desc$Version
+
+    paste0 (pkg, "_", v, ".tar.gz")
 }
