@@ -1,6 +1,6 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.0.1.041
+Version: 0.1.0
 Authors@R: 
     person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"))
 Description: Miscellaneous functions which I load in my '.Rprofile'.
@@ -15,7 +15,9 @@ Imports:
     lubridate,
     rappdirs
 Suggests:
+    curl,
     httr,
+    pkgbuild,
     precommit
 Encoding: UTF-8
 LazyData: true
