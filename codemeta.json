@@ -7,13 +7,13 @@
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.1.040",
+  "version": "0.1.0.001",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.1.3 (2022-03-10)",
+  "runtimePlatform": "R version 4.3.0 (2023-04-21)",
   "author": [
     {
       "@type": "Person",
@@ -33,6 +33,18 @@
   "softwareSuggestions": [
     {
       "@type": "SoftwareApplication",
+      "identifier": "curl",
+      "name": "curl",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=curl"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "httr",
       "name": "httr",
       "provider": {
@@ -42,6 +54,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=httr"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "pkgbuild",
+      "name": "pkgbuild",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=pkgbuild"
     },
     {
       "@type": "SoftwareApplication",
@@ -131,7 +155,7 @@
     },
     "SystemRequirements": {}
   },
-  "fileSize": "31.284KB",
+  "fileSize": "41.955KB",
   "readme": "https://github.com/mpadge/mpmisc/blob/main/README.md",
   "contIntegration": "https://github.com/mpadge/mpmisc/actions"
 }
