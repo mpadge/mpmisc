@@ -8,21 +8,23 @@ win_builder_checks <- function () {
     requireNamespace ("pkgbuild")
 
     here <- here::here ()
-    setwd (here)
+    wd <- setwd (here)
 
     build_dir <- normalizePath (file.path (here, ".."))
     path_tar <- file.path (build_dir, tar_from_desc (here))
     if (!file.exists (path_tar)) {
         path_tar <- pkgbuild::build (here, build_dir)
     }
+    file_tar <- basename (path_tar)
+    setwd (build_dir)
 
     url_base <- "ftp://win-builder.r-project.org/"
     versions <- c ("R-oldrelease", "R-release", "R-devel")
 
     for (v in versions) {
 
-        url <- paste0 (url_base, v, "/", path_tar)
-        con <- file (path_tar, open = "rb")
+        url <- paste0 (url_base, v, "/", file_tar)
+        con <- file (basename (file_tar), open = "rb")
         h <- curl::new_handle (upload = TRUE, filetime = FALSE)
         curl::handle_setopt (h, readfunction = function (n) {
             readBin (con, raw (), n = n)
@@ -32,6 +34,7 @@ win_builder_checks <- function () {
 
         message ("Uploaded ", v)
     }
+    setwd (wd)
 }
 
 tar_from_desc <- function (here) {
