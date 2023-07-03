@@ -23,8 +23,8 @@ win_builder_checks <- function () {
 
     for (v in versions) {
 
-        url <- paste0 (url_base, v, "/", file_tar)
-        con <- file (basename (file_tar), open = "rb")
+        url <- paste0 (url_base, v, "/", file_tar) # filename only
+        con <- file (path_tar, open = "rb") # Full path
         h <- curl::new_handle (upload = TRUE, filetime = FALSE)
         curl::handle_setopt (h, readfunction = function (n) {
             readBin (con, raw (), n = n)
