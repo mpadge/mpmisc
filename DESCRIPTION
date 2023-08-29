@@ -1,6 +1,6 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.1.1.002
+Version: 0.1.1.003
 Authors@R: 
     person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"))
 Description: Miscellaneous functions which I load in my '.Rprofile'.
