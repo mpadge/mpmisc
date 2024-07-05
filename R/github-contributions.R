@@ -17,8 +17,8 @@ gh_contrib_query <- function () {
                          }
                      }
                  }
-                 commitContributionsByRepository {
-                     contributions (first: 100) {
+                 commitContributionsByRepository (maxRepositories: 100){
+                     contributions (last: 100, orderBy: {field: OCCURRED_AT, direction: DESC}) {
                          nodes {
                              commitCount
                              occurredAt
