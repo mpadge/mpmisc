@@ -30,18 +30,22 @@ add_git_remotes <- function (force_bb = FALSE) {
         chk$status_code == 200
     }
 
-    origins <- list (originbb = originbb, origingl = origingl, originsh = originsh)
+    origins <- list (
+        originbb = originbb,
+        origingl = origingl,
+        originsh = originsh
+    )
     for (i in seq (origins)) {
         (origin_exists (origins [[i]]) & !names (origins) [i] %in% x$name)
-        if (origin_exists (origins [[i]]) & !names (origins) [i] %in% x$name) {
-            chk <- gert::git_remote_add (names (origins) [i], origins [[i]])
+        if (origin_exists (origins [[i]]) && !names (origins) [i] %in% x$name) {
+            gert::git_remote_add (names (origins) [i], origins [[i]])
             message ("adding remote: ", names (origins) [i])
         }
     }
 
     if (force_bb) {
         o <- origins [[grep ("bitbucket", origins)]]
-        chk <- gert::git_remote_add ("originbb", o)
+        gert::git_remote_add ("originbb", o)
         message ("adding remote: originbb")
     }
 }

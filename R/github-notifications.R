@@ -24,7 +24,6 @@ gh_notifications <- function (quiet = FALSE) {
 
         x$title <- x$subject$title
         x$repository <- x$repository$full_name
-        subject <- x$subject [which (!is.na (x$subject$url)), ]
         x$issue_num <- ""
         x$issue_num [which (is.na (x$subject$url))] <- "CheckSuite"
         index <- which (!is.na (x$subject$url))
@@ -70,7 +69,7 @@ notifications_to_screen <- function (x) {
             character (1)
         )
 
-        for (i in seq (nrow (x))) {
+        for (i in seq_len (nrow (x))) {
 
             msg <- paste0 (
                 SYM, " ", ARG, repo [i], " #",
@@ -164,5 +163,5 @@ mark_gh_notifications_as_read <- function () {
 
     h <- httr::add_headers (Authorization = auth)
 
-    x <- httr::PUT (u, h)
+    httr::PUT (u, h)
 }
