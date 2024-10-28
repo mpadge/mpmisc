@@ -1,4 +1,3 @@
-
 #' Grab random pixabay image for leftwm background
 #'
 #' @param category Pixabay category from list at
@@ -7,11 +6,13 @@
 pixabay <- function (category = "buildings") {
 
     key <- Sys.getenv ("PIXABAY")
-    u <- paste0 ("https://pixabay.com/api/?key=",
-                 key, "&image_type=photo&order=latest&per_page=100",
-                 "&orientation=horizontal&category=",
-                 category,
-                 "&editors_choice=true")
+    u <- paste0 (
+        "https://pixabay.com/api/?key=",
+        key, "&image_type=photo&order=latest&per_page=100",
+        "&orientation=horizontal&category=",
+        category,
+        "&editors_choice=true"
+    )
     x <- jsonlite::fromJSON (u)
     imgs <- x$hits$largeImageURL
 
@@ -30,11 +31,13 @@ pix_local <- function () {
     key <- Sys.getenv ("PIX_LOCAL_DIR")
     if (!nzchar (key)) {
         stop ("Enivronment variable 'PIX_LOCAL_DIR' must be specified.",
-              call. = FALSE)
+            call. = FALSE
+        )
     }
     if (!dir.exists (key)) {
         stop ("Directory [", key, "] does not exist.",
-              call. = FALSE)
+            call. = FALSE
+        )
     }
     f_new <- sample (list.files (key, full.names = TRUE), 1L)
 

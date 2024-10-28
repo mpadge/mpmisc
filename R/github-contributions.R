@@ -1,6 +1,6 @@
 gh_contrib_query <- function () {
 
-    q <- paste0 ("{
+    paste0 ("{
         user(login:\"mpadge\") {
              login
              name
@@ -122,7 +122,8 @@ gh_daily_intern <- function (dat, day = 0L) {
     }
     # last column is still 'repository$name', so have to unlist that
     dat <- lapply (dat, function (i) {
-        names (i) [which (names (i) == "repository.nameWithOwner")] <- "repository"
+        names (i) [which (names (i) == "repository.nameWithOwner")] <-
+            "repository"
         names (i) [which (names (i) == "repository")] <- "name"
         return (i)
     })
@@ -161,11 +162,12 @@ gh_daily_print <- function (dat) {
 
     msg <- paste0 (
         TXT, "----", SYM,
-        "  Commit contributions for ", dat$weekday, " ", dat$target_date, ":", NC
+        "  Commit contributions for ",
+        dat$weekday, " ", dat$target_date, ":", NC
     )
     message (msg)
 
-    for (i in seq (nrow (dat$dat))) {
+    for (i in seq_len (nrow (dat$dat))) {
         message (
             "   ", ARG, dat$dat$name [i],
             "  ", TXT, dat$dat$commitCount [i]

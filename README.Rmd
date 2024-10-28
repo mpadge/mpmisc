@@ -47,7 +47,7 @@ has both:
 
 ```
 -   id: description version
-    name: Version has been incremeneted in DESCRIPTION
+    name: Version has been incremented in DESCRIPTION
     entry: inst/precommit/description
     language: script
 ```

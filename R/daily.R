@@ -17,7 +17,8 @@ mpmisc_daily <- function (txt = "") {
 
     today <- as.Date (strftime (Sys.time (), "%Y-%m-%d"))
     daily_dates <- gsub ("\\*\\*", "", grep ("^\\*\\*", daily, value = TRUE))
-    daily_dates <- as.Date (strptime (gsub ("^\\w+\\s", "", daily_dates), "%d/%m/%Y"))
+    daily_dates <- gsub ("^\\w+\\s", "", daily_dates)
+    daily_dates <- as.Date (strptime (daily_dates, "%d/%m/%Y"))
     daily_dates <- daily_dates [which (!is.na (daily_dates))]
     if (max (daily_dates) < today) {
         daily <- add_new_dates (today, daily)
@@ -56,7 +57,8 @@ add_new_dates <- function (d, daily) {
 
     # add any new dates from calendar:
     daily_dates <- gsub ("\\*\\*", "", grep ("^\\*\\*", daily, value = TRUE))
-    daily_dates <- as.Date (strptime (gsub ("^\\w+\\s", "", daily_dates), "%d/%m/%Y"))
+    daily_dates <- gsub ("^\\w+\\s", "", daily_dates)
+    daily_dates <- as.Date (strptime (daily_dates, "%d/%m/%Y"))
     daily_dates <- daily_dates [which (!is.na (daily_dates))]
 
     dnew <- unique (d [which (d > max (daily_dates))])
@@ -67,7 +69,9 @@ add_new_dates <- function (d, daily) {
     # today <- as.Date (strftime (Sys.time (), "%Y-%m-%d"))
     # dnew <- rev (seq (today, max (dnew), by = "days") [-1])
     dnew <- rev (seq (max (daily_dates) + 1, max (dnew), by = "day"))
-    dnew_abbr <- as.character (lubridate::wday (dnew, label = TRUE, abbr = TRUE))
+    dnew_abbr <- as.character (
+        lubridate::wday (dnew, label = TRUE, abbr = TRUE)
+    )
     dnew <- strftime (dnew, "%d/%m/%Y")
     index <- which (!dnew_abbr %in% c ("Sat", "Sun"))
     dnew <- dnew [index]

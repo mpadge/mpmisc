@@ -1,4 +1,3 @@
-
 # https://docs.github.com/en/graphql/reference/objects#user
 # https://docs.github.com/en/graphql/reference/objects#contributionscollection
 
@@ -44,31 +43,34 @@ get_qry <- function (gh_cli, user = "mpadge", n = 20) {
 #' @export
 latest_comments <- function (user = "mpadge", n = 20, open = TRUE) {
 
-    token <- Sys.getenv("GITHUB_TOKEN")
+    token <- Sys.getenv ("GITHUB_TOKEN")
     auth <- paste0 ("Bearer ", token)
 
     gh_cli <- ghql::GraphqlClient$new (
-                       url = "https://api.github.com/graphql",
-                       headers = list (Authorization = auth)
-                        )
+        url = "https://api.github.com/graphql",
+        headers = list (Authorization = auth)
+    )
 
     qry <- get_qry (user = user, n = n * 5)
 
-    dat <- gh_cli$exec(qry$queries$user) |>
+    dat <- gh_cli$exec (qry$queries$user) |>
         jsonlite::fromJSON ()
 
     out <- dat$data$user$issueComments$edges$node
-    out <- data.frame (createdAt = out$createdAt,
-                       name = out$issue$repository$name,
-                       nameWithOwner = out$issue$repository$nameWithOwner,
-                       number = out$issue$number,
-                       closed = out$issue$closed)
+    out <- data.frame (
+        createdAt = out$createdAt,
+        name = out$issue$repository$name,
+        nameWithOwner = out$issue$repository$nameWithOwner,
+        number = out$issue$number,
+        closed = out$issue$closed
+    )
 
     out$repo_issue <- paste0 (out$name, "#", out$number)
     out$org_repo_issue <- paste0 (out$nameWithOwner, "#", out$number)
 
-    if (open)
+    if (open) {
         out <- out [which (!out$closed), ]
+    }
 
     out$createdAt <- strptime (out$createdAt, "%Y-%m-%dT%H:%M:%SZ") # nolint
 
@@ -88,8 +90,9 @@ latest_comments <- function (user = "mpadge", n = 20, open = TRUE) {
 cache_comments_file <- function () {
 
     cache_dir <- rappdirs::user_cache_dir ("mpmisc")
-    if (!dir.exists (cache_dir))
+    if (!dir.exists (cache_dir)) {
         dir.create (cache_dir, recursive = TRUE)
+    }
 
     file.path (cache_dir, "latest_gh_comments.Rds")
 }
@@ -119,28 +122,35 @@ retrieve_cached_comments <- function () {
 #' @export
 open_gh_issue <- function (repo = NULL, issue = NULL, user = "mpadge") {
 
-    if (is.null (repo))
+    if (is.null (repo)) {
         stop ("repo must be specified")
-    if (length (repo) > 1L)
+    }
+    if (length (repo) > 1L) {
         stop ("only one repo may be specified")
+    }
 
     cmts <- retrieve_cached_comments ()
 
-    if (!repo %in% cmts$name)
+    if (!repo %in% cmts$name) {
         cmts <- latest_comments (user = user, open = FALSE)
+    }
 
     cmts <- cmts [which (cmts$name == repo), ]
 
-    url <- paste0 ("https://github.com/",
-                   cmts$nameWithOwner [1],
-                   "/issues")
+    url <- paste0 (
+        "https://github.com/",
+        cmts$nameWithOwner [1],
+        "/issues"
+    )
 
     if (!is.null (issue)) {
 
-        if (!is.numeric (issue))
+        if (!is.numeric (issue)) {
             stop ("issue must be a number")
-        if (length (issue) > 1L)
+        }
+        if (length (issue) > 1L) {
             stop ("issue must be a single number")
+        }
 
         url <- paste0 (url, "/", as.integer (issue))
     }

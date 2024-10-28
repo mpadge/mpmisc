@@ -29,7 +29,7 @@ win_builder_checks <- function () {
         curl::handle_setopt (h, readfunction = function (n) {
             readBin (con, raw (), n = n)
         }, verbose = FALSE)
-        out <- curl::curl_fetch_memory (url, handle = h)
+        curl::curl_fetch_memory (url, handle = h)
         close (con)
 
         message ("Uploaded ", v)

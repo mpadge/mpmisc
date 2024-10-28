@@ -1,4 +1,3 @@
-
 #' Get latest unread github notifications
 #'
 #' Not yet on graphql API:
@@ -25,7 +24,6 @@ gh_notifications <- function (quiet = FALSE) {
 
         x$title <- x$subject$title
         x$repository <- x$repository$full_name
-        subject <- x$subject [which (!is.na (x$subject$url)), ]
         x$issue_num <- ""
         x$issue_num [which (is.na (x$subject$url))] <- "CheckSuite"
         index <- which (!is.na (x$subject$url))
@@ -43,8 +41,9 @@ gh_notifications <- function (quiet = FALSE) {
         x$last_read_at <- strptime (x$last_read_at, "%Y-%m-%dT%H:%M:%SZ")
     }
 
-    if (!quiet)
+    if (!quiet) {
         notifications_to_screen (x)
+    }
 
     cache_notifications (x)
 
@@ -53,7 +52,7 @@ gh_notifications <- function (quiet = FALSE) {
 
 notifications_to_screen <- function (x) {
 
-    NC <- "\033[0m"                                            # nolint
+    NC <- "\033[0m" # nolint
     ARG <- "\033[0;31m" # red                                  # nolint
     TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
     SYM <- "\u2192" # right arrow                              # nolint
@@ -61,16 +60,22 @@ notifications_to_screen <- function (x) {
     if (length (x) > 0) {
 
         n <- max (nchar (x$repository))
-        repo <- vapply (x$repository, function (i)
-                        paste0 (i, paste0 (rep (" ", n - nchar (i)),
-                                           collapse = "")),
-                        character (1))
+        repo <- vapply (
+            x$repository, function (i) {
+                paste0 (i, paste0 (rep (" ", n - nchar (i)),
+                    collapse = ""
+                ))
+            },
+            character (1)
+        )
 
-        for (i in seq (nrow (x))) {
+        for (i in seq_len (nrow (x))) {
 
-            msg <- paste0 (SYM, " ", ARG, repo[i], " #",
-                           x$issue_num [i], NC, ": ",
-                           TXT, x$title [i], NC)
+            msg <- paste0 (
+                SYM, " ", ARG, repo [i], " #",
+                x$issue_num [i], NC, ": ",
+                TXT, x$title [i], NC
+            )
 
             message (msg)
         }
@@ -85,8 +90,9 @@ notifications_to_screen <- function (x) {
 cache_notifications_file <- function () {
 
     cache_dir <- rappdirs::user_cache_dir ("mpmisc")
-    if (!dir.exists (cache_dir))
+    if (!dir.exists (cache_dir)) {
         dir.create (cache_dir, recursive = TRUE)
+    }
 
     file.path (cache_dir, "latest_gh_notifications.Rds")
 }
@@ -107,7 +113,7 @@ cache_notifications <- function (x) {
 #' @export
 open_gh_notification <- function (n) {
 
-    NC <- "\033[0m"                                            # nolint
+    NC <- "\033[0m" # nolint
     ARG <- "\033[0;31m" # red                                  # nolint
     TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
     SYM <- "\u2192" # right arrow                              # nolint
@@ -121,18 +127,22 @@ open_gh_notification <- function (n) {
 
     } else if (n > nrow (x)) {
 
-        msg <- paste0 (SYM, " ", TXT,
-                       "There are not that many cached notifications.", NC)
+        msg <- paste0 (
+            SYM, " ", TXT,
+            "There are not that many cached notifications.", NC
+        )
         message (msg)
 
     } else {
 
         x <- x [n, ]
 
-        url <- paste0 ("https://github.com/",
-                       x$repository,
-                       "/issues/",
-                       x$issue_num)
+        url <- paste0 (
+            "https://github.com/",
+            x$repository,
+            "/issues/",
+            x$issue_num
+        )
 
         utils::browseURL (url = url)
     }
@@ -153,5 +163,5 @@ mark_gh_notifications_as_read <- function () {
 
     h <- httr::add_headers (Authorization = auth)
 
-    x <- httr::PUT (u, h)
+    httr::PUT (u, h)
 }
