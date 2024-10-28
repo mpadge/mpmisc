@@ -9,10 +9,10 @@ status](https://github.com/mpadge/mpmisc/workflows/R-CMD-check/badge.svg)](https
 Miscellaneous R functions which I load in my `.Rprofile`, including
 functions to
 
-  - Increment development version
-  - Set up multiple git remotes
-  - Add pre-commit hooks to ensure package version is incremented on
-    each commit
+- Increment development version
+- Set up multiple git remotes
+- Add pre-commit hooks to ensure package version is incremented on each
+  commit
 
 ### Increment development version
 
@@ -50,10 +50,10 @@ This repository then has both:
     version in the `precommit` R package, primarily through the addition
     of:
 
-<!-- end list -->
+<!-- -->
 
     -   id: description version
-        name: Version has been incremeneted in DESCRIPTION
+        name: Version has been incremented in DESCRIPTION
         entry: inst/precommit/description
         language: script
 
