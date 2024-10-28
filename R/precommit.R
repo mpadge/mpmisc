@@ -44,13 +44,16 @@ hooks_exist <- function (here) {
 }
 
 grab_local_hooks <- function (url, branch, location, here) {
-    u <- paste0 (gsub ("/$", "", url),
-                 "/raw/main",
-                 #branch,
-                 "/.pre-commit-config.yaml")
+    u <- paste0 (
+        gsub ("/$", "", url),
+        "/raw/main",
+        # branch,
+        "/.pre-commit-config.yaml"
+    )
     x <- httr::GET (u)
-    if (x$status_code != 200)
+    if (x$status_code != 200) {
         stop ("http status [", x$status_code, "]")
+    }
 
     xt <- httr::content (x, as = "text", encoding = "UTF-8")
     xt <- strsplit (xt, "\n") [[1]]
@@ -80,29 +83,35 @@ sub_location <- function (x, location) {
 add_to_rbuildignore <- function (here) {
     f <- file.path (here, ".Rbuildignore")
     rb <- NULL
-    if (file.exists (f))
+    if (file.exists (f)) {
         rb <- readLines (f)
+    }
 
     chk <- grepl ("\\^\\\\\\.pre-commit-config\\\\.yaml\\$", rb)
-    if (!any (chk))
+    if (!any (chk)) {
         rb <- c (rb, "^\\.pre-commit-config\\.yaml$")
+    }
     writeLines (rb, con = f)
 }
 
 download_hook <- function (url, branch, here) {
     fp <- file.path (here, ".hooks")
-    if (!dir.exists (fp))
+    if (!dir.exists (fp)) {
         dir.create (fp, recursive = TRUE)
+    }
 
     f <- file.path (fp, "description")
     if (!file.exists (f)) {
-        u <- paste0 (gsub ("/$", "", url),
-                     "/raw/",
-                     branch,
-                     "/inst/precommit/description")
+        u <- paste0 (
+            gsub ("/$", "", url),
+            "/raw/",
+            branch,
+            "/inst/precommit/description"
+        )
         x <- httr::GET (u)
-        if (x$status_code != 200)
+        if (x$status_code != 200) {
             stop ("http status [", x$status_code, "]")
+        }
 
         xt <- httr::content (x, as = "text", encoding = "UTF-8")
         xt <- strsplit (xt, "\n") [[1]]
@@ -113,16 +122,19 @@ download_hook <- function (url, branch, here) {
 
 check_hook_location <- function (here) {
     f <- file.path (here, ".pre-commit-config.yaml")
-    if (!file.exists (f))
+    if (!file.exists (f)) {
         stop (".pre-commit-config.yaml does not exist here")
+    }
 
     x <- readLines (f)
     i <- grep ("id: description version", x)
     if (length (i) == 1) {
         i <- i + grep ("entry:", x [i:length (x)]) - 1
         xi <- gsub ("\\s+entry:\\s", "", x [i])
-        message ("Please modify line#", i, " of 'pre-commit-config.yaml' to\n",
-                 "specify location of 'description' precommit hook\n",
-                 "Current location: ", xi)
+        message (
+            "Please modify line#", i, " of 'pre-commit-config.yaml' to\n",
+            "specify location of 'description' precommit hook\n",
+            "Current location: ", xi
+        )
     }
 }

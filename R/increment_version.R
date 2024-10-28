@@ -14,33 +14,33 @@
 #' the version.
 #'
 #' @export
-increment_dev_version <- function() {
-  pkg_dir <- here::here ()
+increment_dev_version <- function () {
+    pkg_dir <- here::here ()
 
-  desc <- readLines(file.path(pkg_dir, "DESCRIPTION"))
-  vers_line_num <- grep("Version:", desc)
-  vers <- strsplit(gsub("Version: ", "", desc [vers_line_num]), "\\.") [[1]]
-  old_vers <- vers
-  message("Incrementing version from ",
-    paste0(old_vers, collapse = "."),
-    appendLF = FALSE
-  )
-  if (length(vers) == 4) {
-    old_vers <- vers [-length(vers)]
-    new_vers <- sprintf("%03d", as.integer(utils::tail(vers, 1)) + 1)
-  } else {
-    new_vers <- "001"
-  }
-  new_vers <- paste0(c(old_vers, new_vers), collapse = ".")
-  message(" to ", new_vers)
-  desc [vers_line_num] <- paste0("Version: ", new_vers)
-  writeLines(desc, file.path(pkg_dir, "DESCRIPTION"))
+    desc <- readLines (file.path (pkg_dir, "DESCRIPTION"))
+    vers_line_num <- grep ("Version:", desc)
+    vers <- strsplit (gsub ("Version: ", "", desc [vers_line_num]), "\\.") [[1]]
+    old_vers <- vers
+    message ("Incrementing version from ",
+        paste0 (old_vers, collapse = "."),
+        appendLF = FALSE
+    )
+    if (length (vers) == 4) {
+        old_vers <- vers [-length (vers)]
+        new_vers <- sprintf ("%03d", as.integer (utils::tail (vers, 1)) + 1)
+    } else {
+        new_vers <- "001"
+    }
+    new_vers <- paste0 (c (old_vers, new_vers), collapse = ".")
+    message (" to ", new_vers)
+    desc [vers_line_num] <- paste0 ("Version: ", new_vers)
+    writeLines (desc, file.path (pkg_dir, "DESCRIPTION"))
 
-  # codemeta
-  f <- file.path(pkg_dir, "codemeta.json")
-  if (file.exists(f)) {
-    x <- jsonlite::fromJSON(f, simplifyVector = FALSE)
-    x$version <- new_vers
-    jsonlite::write_json(x, f, pretty = TRUE, auto_unbox = TRUE)
-  }
+    # codemeta
+    f <- file.path (pkg_dir, "codemeta.json")
+    if (file.exists (f)) {
+        x <- jsonlite::fromJSON (f, simplifyVector = FALSE)
+        x$version <- new_vers
+        jsonlite::write_json (x, f, pretty = TRUE, auto_unbox = TRUE)
+    }
 }

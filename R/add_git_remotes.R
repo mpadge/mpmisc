@@ -7,9 +7,8 @@
 #' simply forces a Bitbucket remote to be added regardless of whether or not
 #' that remote repository actually exists or not.
 #' @export
-add_git_remotes <- function (force_bb = FALSE)
-{
-    x <- gert::git_remote_list()
+add_git_remotes <- function (force_bb = FALSE) {
+    x <- gert::git_remote_list ()
     origin <- x$url
 
     repo <- utils::tail (strsplit (origin, "/") [[1]], 1)

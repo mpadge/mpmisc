@@ -10,9 +10,9 @@ debug <- function () {
 
     write_makevars ()
 
-    #message ("Starting gdb ...")
-    #cmd <- paste0 ("R -d gdb -e 'source(\"", script, "\")'")
-    #system (cmd)
+    # message ("Starting gdb ...")
+    # cmd <- paste0 ("R -d gdb -e 'source(\"", script, "\")'")
+    # system (cmd)
     # -> gdb must be called directly from terminal
 }
 
@@ -28,9 +28,10 @@ write_makevars <- function () {
     }
 
     makevars <- grep (paste0 ("src\\", .Platform$file.sep, "[Mm]akevars$"),
-                      flist,
-                      fixed = FALSE,
-                      value = TRUE)
+        flist,
+        fixed = FALSE,
+        value = TRUE
+    )
 
     if (length (makevars) > 0L) {
 
