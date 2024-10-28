@@ -12,6 +12,6 @@ simply forces a Bitbucket remote to be added regardless of whether or not
 that remote repository actually exists or not.}
 }
 \description{
-Automatically add git remotes for Gitlab, Bitbucket, and Sourcehut if the
-remote repositories exist.
+Automatically add git remotes for Gitlab, Bitbucket, Sourcehut, and
+Codeberg, if the remote repositories exist.
 }

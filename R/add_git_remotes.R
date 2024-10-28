@@ -1,7 +1,7 @@
 #' add_git_remotes
 #'
-#' Automatically add git remotes for Gitlab, Bitbucket, and Sourcehut if the
-#' remote repositories exist.
+#' Automatically add git remotes for Gitlab, Bitbucket, Sourcehut, and
+#' Codeberg, if the remote repositories exist.
 #'
 #' @param force_bb Bitbucket repos can not be directly queried; this option
 #' simply forces a Bitbucket remote to be added regardless of whether or not
@@ -20,6 +20,7 @@ add_git_remotes <- function (force_bb = FALSE) {
     originbb <- paste0 ("git@bitbucket.org:", org, "/", repo)
     origingl <- paste0 ("git@gitlab.com:", orggl, "/", repo)
     originsh <- paste0 ("git@git.sr.ht:~mpadge/", repo)
+    origincb <- paste0 ("git@codeberg.org:", org, "/", repo)
 
     origin_to_url <- function (o) {
         gsub ("git@", "https://", gsub (":", "/", o))
@@ -33,7 +34,8 @@ add_git_remotes <- function (force_bb = FALSE) {
     origins <- list (
         originbb = originbb,
         origingl = origingl,
-        originsh = originsh
+        originsh = originsh,
+        origincb = origincb
     )
     for (i in seq (origins)) {
         (origin_exists (origins [[i]]) & !names (origins) [i] %in% x$name)
