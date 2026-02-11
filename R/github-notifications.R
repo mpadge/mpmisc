@@ -100,7 +100,7 @@ notifications_to_screen <- function (x) {
     TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
     SYM <- "\u2192" # right arrow                              # nolint
 
-    if (length (x) > 0) {
+    if (nrow (x) > 0) {
 
         n <- max (nchar (x$repository))
         repo <- vapply (
