@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.1.1.010",
+  "version": "0.1.1.011",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
