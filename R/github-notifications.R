@@ -181,8 +181,13 @@ open_gh_notification <- function (what = "github", n) {
 
         x <- x [n, ]
 
+        base_url <- switch (what,
+            "github" = "https://github.com/",
+            "codeberg" = "https://codeberg.org/"
+        )
+
         url <- paste0 (
-            "https://github.com/",
+            base_url,
             x$repository,
             "/issues/",
             x$issue_num
