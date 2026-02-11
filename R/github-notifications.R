@@ -45,6 +45,8 @@ gh_notifications <- function (quiet = FALSE) {
             updated_at = getone (body, "updated_at"),
             last_read_at = getone (body, "last_read_at")
         )
+        check_suite <- which (x$type == "CheckSuite")
+        x$issue_num [check_suite] <- "CheckSuite"
 
     }
 
