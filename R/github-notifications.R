@@ -1,20 +1,30 @@
-#' Get latest unread github notifications
+#' Get latest unread notifications from GitHub or Codeberg
 #'
 #' Not yet on graphql API:
 #' https://github.community/t/get-notification-list-via-graphql-api/13836
 #' but available on REST API:
 #' https://docs.github.com/en/rest/reference/activity#notifications
+#' And Codeberg API:
+#' https://codeberg.org/api/swagger#/notification
+#'
+#' @param where Service to get notifications from; one of "github" or
+#' "codeberg" (case-insensitive).
 #' @param quiet If `FALSE`, print notifications to screen
 #' @return `data.frame` of notifications (invisibly)
+#'
 #' @export
-gh_notifications <- function (quiet = FALSE) {
+gh_notifications <- function (where = "github", quiet = FALSE) {
 
-    gh_tok <- Sys.getenv ("GITHUB_TOKEN")
+    where <- match.arg (tolower (where), c ("github", "codeberg"))
+    tok <- get_token (where)
 
-    u <- "https://api.github.com/notifications"
+    u <- switch (where,
+        "github" = "https://api.github.com/notifications",
+        "codeberg" = "https://codeberg.org/api/v1/notifications"
+    )
 
     req <- httr2::request (u) |>
-        httr2::req_headers ("Authorization" = paste0 ("Bearer ", gh_tok))
+        httr2::req_headers ("Authorization" = paste0 ("Bearer ", tok))
 
     resp <- httr2::req_perform (req)
     body <- httr2::resp_body_json (resp)
@@ -58,6 +68,20 @@ gh_notifications <- function (quiet = FALSE) {
 
     invisible (x)
 }
+
+get_token <- function (where = "github") {
+
+    where <- match.arg (where, c ("github", "codeberg"))
+
+    if (where == "github") {
+        tok <- Sys.getenv ("GITHUB_TOKEN")
+    } else if (where == "codeberg") {
+        e <- Sys.getenv ()
+        tok <- e [[grep ("codeberg", names (e), ignore.case = TRUE)]]
+    }
+    return (tok)
+}
+
 
 notifications_to_screen <- function (x) {
 

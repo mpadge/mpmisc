@@ -4,9 +4,12 @@
 \alias{gh_notifications}
 \title{Get latest unread github notifications}
 \usage{
-gh_notifications(quiet = FALSE)
+gh_notifications(where = "github", quiet = FALSE)
 }
 \arguments{
+\item{where}{Service to get notifications from; one of "github" or
+"codeberg" (case-insensitive).}
+
 \item{quiet}{If \code{FALSE}, print notifications to screen}
 }
 \value{
