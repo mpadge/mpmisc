@@ -10,35 +10,42 @@
 gh_notifications <- function (quiet = FALSE) {
 
     gh_tok <- Sys.getenv ("GITHUB_TOKEN")
-    auth <- paste ("Bearer", gh_tok, sep = " ")
 
     u <- "https://api.github.com/notifications"
 
-    h <- httr::add_headers (Authorization = auth)
+    req <- httr2::request (u) |>
+        httr2::req_headers ("Authorization" = paste0 ("Bearer ", gh_tok))
 
-    x <- httr::GET (u, h) |>
-        httr::content ("text") |>
-        jsonlite::fromJSON ()
+    resp <- httr2::req_perform (req)
+    body <- httr2::resp_body_json (resp)
 
-    if (length (x) > 0L) {
+    if (length (body) > 0L) {
 
-        x$title <- x$subject$title
-        x$repository <- x$repository$full_name
-        x$issue_num <- ""
-        x$issue_num [which (is.na (x$subject$url))] <- "CheckSuite"
-        index <- which (!is.na (x$subject$url))
-        if (length (index) > 0L) {
-            s <- do.call (rbind, strsplit (x$subject$url [index], "/"))
-            x$issue_num [index] <- suppressWarnings (
-                as.integer (s [, ncol (s)])
-            )
+        getone <- function (body, what = "title", sub = NULL) {
+            vapply (body, function (b) {
+                if (is.null (sub)) {
+                    this <- b [[what]]
+                } else {
+                    this <- b [[sub]] [[what]]
+                }
+                ifelse (is.null (this), NA_character_, this)
+            }, character (1L))
         }
-        x$issue_num [is.na (x$issue_num)] <- "commit"
-        x$type <- x$subject$subject.type
 
-        x$subscription_url <- x$subject <- NULL
-        x$updated_at <- strptime (x$updated_at, "%Y-%m-%dT%H:%M:%SZ")
-        x$last_read_at <- strptime (x$last_read_at, "%Y-%m-%dT%H:%M:%SZ")
+        urls <- getone (body, "url", "subject")
+        issue_nums <- as.integer (gsub ("^.*\\/", "", urls))
+        issue_nums [is.na (issue_nums)] <- "commit"
+
+        x <- list (
+            title = getone (body, "title", "subject"),
+            repository = getone (body, "full_name", "repository"),
+            issue_num = issue_nums,
+            type = getone (body, "type", "subject"),
+            subscription_url = getone (body, "subscription_url"),
+            updated_at = getone (body, "updated_at"),
+            last_read_at = getone (body, "last_read_at")
+        )
+
     }
 
     if (!quiet) {
@@ -69,7 +76,7 @@ notifications_to_screen <- function (x) {
             character (1)
         )
 
-        for (i in seq_len (nrow (x))) {
+        for (i in seq_along (x$title)) {
 
             msg <- paste0 (
                 SYM, " ", ARG, repo [i], " #",
