@@ -23,6 +23,16 @@ gh_notifications <- function (where = "github", quiet = FALSE) {
         "codeberg" = "https://codeberg.org/api/v1/notifications"
     )
 
+    x <- data.frame (
+        title = character (0L),
+        repository = character (0L),
+        issue_num = character (0L),
+        type = character (0L),
+        subscription_url = character (0L),
+        updated_at = character (0L),
+        last_read_at = character (0L)
+    )
+
     req <- httr2::request (u) |>
         httr2::req_headers ("Authorization" = paste0 ("Bearer ", tok))
 
@@ -43,7 +53,7 @@ gh_notifications <- function (where = "github", quiet = FALSE) {
         }
 
         urls <- getone (body, "url", "subject")
-        issue_nums <- as.integer (gsub ("^.*\\/", "", urls))
+        issue_nums <- gsub ("^.*\\/", "", urls)
         issue_nums [is.na (issue_nums)] <- "commit"
 
         x <- data.frame (
