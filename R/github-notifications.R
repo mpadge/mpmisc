@@ -46,7 +46,7 @@ gh_notifications <- function (where = "github", quiet = FALSE) {
         issue_nums <- as.integer (gsub ("^.*\\/", "", urls))
         issue_nums [is.na (issue_nums)] <- "commit"
 
-        x <- list (
+        x <- data.frame (
             title = getone (body, "title", "subject"),
             repository = getone (body, "full_name", "repository"),
             issue_num = issue_nums,
@@ -64,7 +64,7 @@ gh_notifications <- function (where = "github", quiet = FALSE) {
         notifications_to_screen (x)
     }
 
-    cache_notifications (x)
+    cache_notifications (x, where)
 
     invisible (x)
 }
@@ -120,19 +120,26 @@ notifications_to_screen <- function (x) {
 
 }
 
-cache_notifications_file <- function () {
+cache_notifications_file <- function (what = "github") {
 
+    what <- match.arg (what, c ("github", "codeberg"))
     cache_dir <- rappdirs::user_cache_dir ("mpmisc")
     if (!dir.exists (cache_dir)) {
         dir.create (cache_dir, recursive = TRUE)
     }
 
-    file.path (cache_dir, "latest_gh_notifications.Rds")
+    f <- ifelse (
+        what == "github",
+        "latest_gh_notifications.Rds",
+        "latest_cb_notifications.Rds"
+    )
+    file.path (cache_dir, f)
 }
 
-cache_notifications <- function (x) {
+cache_notifications <- function (x, what = "github") {
 
-    saveRDS (x, cache_notifications_file ())
+    what <- match.arg (what, c ("github", "codeberg"))
+    saveRDS (x, cache_notifications_file (what))
 }
 
 #' Open web browser to specified GitHub notification
@@ -140,18 +147,22 @@ cache_notifications <- function (x) {
 #' This accepts only the single parameter which corresponds to a number from the
 #' most recently extracted and cached notification list.
 #'
+#' @param what Service to get notifications from; one of "github" or
+#' "codeberg" (case-insensitive).
 #' @param n Number of notification as generated from
 #' \link{gh_notifications}
 #' @return Nothing
 #' @export
-open_gh_notification <- function (n) {
+open_gh_notification <- function (what = "github", n) {
+
+    what <- match.arg (what, c ("github", "codeberg"))
 
     NC <- "\033[0m" # nolint
     ARG <- "\033[0;31m" # red                                  # nolint
     TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
     SYM <- "\u2192" # right arrow                              # nolint
 
-    x <- readRDS (cache_notifications_file ())
+    x <- readRDS (cache_notifications_file (what))
 
     if (length (x) == 0) {
 
@@ -176,6 +187,7 @@ open_gh_notification <- function (n) {
             "/issues/",
             x$issue_num
         )
+        url <- gsub ("\\/issues\\/CheckSuite$", "/actions", url)
 
         utils::browseURL (url = url)
     }
