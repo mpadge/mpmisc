@@ -2,7 +2,7 @@
 % Please edit documentation in R/github-notifications.R
 \name{gh_notifications}
 \alias{gh_notifications}
-\title{Get latest unread github notifications}
+\title{Get latest unread notifications from GitHub or Codeberg}
 \usage{
 gh_notifications(where = "github", quiet = FALSE)
 }
@@ -20,4 +20,6 @@ Not yet on graphql API:
 https://github.community/t/get-notification-list-via-graphql-api/13836
 but available on REST API:
 https://docs.github.com/en/rest/reference/activity#notifications
+And Codeberg API:
+https://codeberg.org/api/swagger#/notification
 }
