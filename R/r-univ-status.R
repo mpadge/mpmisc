@@ -46,7 +46,7 @@ r_univ_build_status <- function (univ = "ropensci-review-tools", maintainer = NU
             )
         }
         if (length (errors) > 0L) {
-            cli::cli_alerg_danger (
+            cli::cli_alert_danger (
                 "Errors for {univ}: {pkg_names[warnings]}"
             )
         }

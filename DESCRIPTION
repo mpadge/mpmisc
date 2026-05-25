@@ -1,6 +1,6 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.1.2
+Version: 0.1.2.001
 Authors@R: 
     person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"))
 Description: Miscellaneous functions which I load in my '.Rprofile'.
@@ -9,6 +9,7 @@ URL: https://github.com/mpadge/mpmisc
 BugReports: https://github.com/mpadge/mpmisc/issues
 Depends: R (>= 4.1.0)
 Imports:
+    cli,
     gert,
     ghql,
     here,
