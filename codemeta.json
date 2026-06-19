@@ -7,7 +7,7 @@
   "codeRepository": "https://github.com/mpadge/mpmisc",
   "issueTracker": "https://github.com/mpadge/mpmisc/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.1.2.002",
+  "version": "0.1.2.004",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -90,6 +90,18 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=precommit"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "stringr",
+      "name": "stringr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=stringr"
     }
   ],
   "softwareRequirements": {
@@ -101,6 +113,42 @@
     },
     "2": {
       "@type": "SoftwareApplication",
+      "identifier": "cli",
+      "name": "cli",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=cli"
+    },
+    "3": {
+      "@type": "SoftwareApplication",
+      "identifier": "dplyr",
+      "name": "dplyr",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=dplyr"
+    },
+    "4": {
+      "@type": "SoftwareApplication",
+      "identifier": "fs",
+      "name": "fs",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=fs"
+    },
+    "5": {
+      "@type": "SoftwareApplication",
       "identifier": "gert",
       "name": "gert",
       "provider": {
@@ -111,7 +159,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=gert"
     },
-    "3": {
+    "6": {
       "@type": "SoftwareApplication",
       "identifier": "ghql",
       "name": "ghql",
@@ -123,7 +171,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=ghql"
     },
-    "4": {
+    "7": {
       "@type": "SoftwareApplication",
       "identifier": "here",
       "name": "here",
@@ -135,7 +183,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=here"
     },
-    "5": {
+    "8": {
       "@type": "SoftwareApplication",
       "identifier": "jsonlite",
       "name": "jsonlite",
@@ -147,7 +195,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=jsonlite"
     },
-    "6": {
+    "9": {
       "@type": "SoftwareApplication",
       "identifier": "lubridate",
       "name": "lubridate",
@@ -159,7 +207,7 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=lubridate"
     },
-    "7": {
+    "10": {
       "@type": "SoftwareApplication",
       "identifier": "rappdirs",
       "name": "rappdirs",
@@ -171,9 +219,21 @@
       },
       "sameAs": "https://CRAN.R-project.org/package=rappdirs"
     },
+    "11": {
+      "@type": "SoftwareApplication",
+      "identifier": "tibble",
+      "name": "tibble",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
+    },
     "SystemRequirements": {}
   },
-  "fileSize": "47.89KB",
+  "fileSize": "56.936KB",
   "readme": "https://github.com/mpadge/mpmisc/blob/main/README.md",
   "contIntegration": "https://github.com/mpadge/mpmisc/actions"
 }

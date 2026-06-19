@@ -32,7 +32,7 @@
 
 workflow_updates <- function (root = ".", max_depth = 2L) {
 
-    requireNamespace (stringr, quietly = TRUE)
+    requireNamespace ("stringr", quietly = TRUE)
 
     # Suppress no visible binding noteS:
     action <- location <- current <- NULL
@@ -47,9 +47,14 @@ workflow_updates <- function (root = ".", max_depth = 2L) {
     candidates <- filter_excludes (candidates, root)
     n_excluded <- n_before - length (candidates)
     if (n_excluded > 0L) {
-        cli::cli_alert_info ("Excluded {n_excluded} director{?y/ies} via {.file .workflow-update-excludes}")
+        cli::cli_alert_info (
+            "Excluded {n_excluded} director{?y/ies} via \\
+            {.file .workflow-update-excludes}"
+        )
     }
-    cli::cli_alert_info ("{length(candidates)} candidate director{?y/ies} found")
+    cli::cli_alert_info (
+        "{length(candidates)} candidate director{?y/ies} found"
+    )
     if (length (candidates) == 0L) {
         return (invisible (tibble::tibble ()))
     }
@@ -61,19 +66,24 @@ workflow_updates <- function (root = ".", max_depth = 2L) {
         return (invisible (tibble::tibble ()))
     }
     cli::cli_alert_info (
-        "{nrow(uses_table)} {.code uses:} entr{?y/ies} across {dplyr::n_distinct(uses_table$location)} file{?s}"
+        "{nrow(uses_table)} {.code uses:} entr{?y/ies} \\
+        across {dplyr::n_distinct(uses_table$location)} file{?s}"
     )
 
     max_versions <- find_max_versions (uses_table)
     outdated <- find_outdated (uses_table, max_versions)
 
     if (nrow (outdated) == 0L) {
-        cli::cli_alert_success ("All workflow actions are at their latest observed version.")
+        cli::cli_alert_success (
+            "All workflow actions are at their latest observed version."
+        )
         return (invisible (tibble::tibble ()))
     }
 
     cli::cli_alert_warning (
-        "{nrow(outdated)} outdated reference{?s} - {dplyr::n_distinct(outdated$action)} action{?s}, {dplyr::n_distinct(outdated$location)} location{?s}"
+        "{nrow(outdated)} outdated reference{?s} \\
+        - {dplyr::n_distinct(outdated$action)} action{?s}, \\
+        {dplyr::n_distinct(outdated$location)} location{?s}"
     )
 
     for (act in unique (outdated$action)) {
@@ -83,11 +93,17 @@ workflow_updates <- function (root = ".", max_depth = 2L) {
         cli::cli_text ("Latest: {cli::col_green(latest_ver)}")
 
         for (ver in unique (sub$current)) {
-            locs <- dplyr::filter (sub, current == ver) |> dplyr::pull (location)
-            rel_locs <- as.character (fs::path_rel (locs, start = normalizePath (root)))
+            locs <- dplyr::filter (sub, current == ver) |>
+                dplyr::pull (location)
+            rel_locs <- as.character (
+                fs::path_rel (locs, start = normalizePath (root))
+            )
             cli::cli_bullets (c (
                 "x" = cli::col_red (ver),
-                stats::setNames (paste0 ("{.path ", rel_locs, "}"), rep (" ", length (rel_locs)))
+                stats::setNames (
+                    paste0 ("{.path ", rel_locs, "}"),
+                    rep (" ", length (rel_locs))
+                )
             ))
         }
         cat ("\n")
@@ -124,7 +140,11 @@ extract_uses_from_file <- function (yaml_file) {
     # rg exits with status 1 on no matches; system2 warns on any non-zero exit
     matches <- suppressWarnings (system2 (
         "rg",
-        c ("--no-filename", "-o", shQuote ("uses:\\s+\\S+@v[\\d.]+"), shQuote (yaml_file)),
+        c (
+            "--no-filename", "-o",
+            shQuote ("uses:\\s+\\S+@v[\\d.]+"),
+            shQuote (yaml_file)
+        ),
         stdout = TRUE, stderr = FALSE
     ))
     if (length (matches) == 0L) {
@@ -133,13 +153,18 @@ extract_uses_from_file <- function (yaml_file) {
 
     tibble::tibble (
         location = yaml_file,
-        key      = stringr::str_trim (stringr::str_remove (matches, "^\\s*uses:\\s*"))
+        key = stringr::str_trim (
+            stringr::str_remove (matches, "^\\s*uses:\\s*")
+        )
     )
 }
 
 extract_uses_keys <- function (candidate_dirs) {
     dplyr::bind_rows (lapply (candidate_dirs, function (d) {
-        yaml_files <- fs::dir_ls (file.path (d, ".github", "workflows"), regexp = "\\.ya?ml$")
+        yaml_files <- fs::dir_ls (
+            file.path (d, ".github", "workflows"),
+            regexp = "\\.ya?ml$"
+        )
         dplyr::bind_rows (lapply (yaml_files, extract_uses_from_file))
     }))
 }
@@ -147,7 +172,12 @@ extract_uses_keys <- function (candidate_dirs) {
 # -- 3. Compute max version per action ----
 
 parse_version <- function (key) {
-    numeric_version (stringr::str_remove (stringr::str_extract (key, "@v[\\d.]+$"), "@v"))
+    numeric_version (
+        stringr::str_remove (
+            stringr::str_extract (key, "@v[\\d.]+$"),
+            "@v"
+        )
+    )
 }
 
 find_max_versions <- function (uses_table) {
@@ -201,7 +231,10 @@ filter_excludes <- function (dirs, root = ".") {
         return (dirs)
     }
 
-    exclude_abs <- normalizePath (file.path (normalizePath (root), lines), mustWork = FALSE)
+    exclude_abs <- normalizePath (
+        file.path (normalizePath (root), lines),
+        mustWork = FALSE
+    )
     keep <- !vapply (dirs, function (d) {
         any (d == exclude_abs | startsWith (d, paste0 (exclude_abs, "/")))
     }, logical (1L))
