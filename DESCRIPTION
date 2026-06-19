@@ -1,6 +1,6 @@
 Package: mpmisc
 Title: Miscellaneous functions which I load in my '.Rprofile'
-Version: 0.1.2.002
+Version: 0.1.2.003
 Authors@R: 
     person("Mark", "Padgham", , "mark.padgham@email.com", role = c("aut", "cre"))
 Description: Miscellaneous functions which I load in my '.Rprofile'.
@@ -10,18 +10,22 @@ BugReports: https://github.com/mpadge/mpmisc/issues
 Depends: R (>= 4.1.0)
 Imports:
     cli,
+    dplyr,
+    fs,
     gert,
     ghql,
     here,
     jsonlite,
     lubridate,
-    rappdirs
+    rappdirs,
+    tibble
 Suggests:
     curl,
     httr,
     httr2,
     pkgbuild,
-    precommit
+    precommit,
+    stringr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
