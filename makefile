@@ -1,15 +1,18 @@
-LFILE = README
+RFILE = README
 
 all: help
 
 doc: ## Update package documentation with `roxygen2`
-	Rscript -e "roxygen2::roxygenise()"; \
+	Rscript -e 'roxygen2::roxygenise()'
 
-knith: $(LFILE).Rmd ## Render README as HTML
-	echo "rmarkdown::render('$(LFILE).Rmd',output_file='$(LFILE).html')" | R --no-save -q
+init: ## Initialize pkgdown site
+	echo "pkgdown::init_site()" | R --no-save -q
 
-knitr: $(LFILE).Rmd ## Render README as markdown
-	echo "rmarkdown::render('$(LFILE).Rmd',output_file='$(LFILE).md')" | R --no-save -q
+pkgdown: ## Build entire pkgdown site
+	echo "pkgdown::build_site()" | R --no-save -q
+
+open: ## Open main HTML vignette in browser
+	xdg-open docs/articles/$(VIGNETTE).html &
 
 check: ## Run `rcmdcheck`
 	Rscript -e 'rcmdcheck::rcmdcheck()'
