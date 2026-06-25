@@ -2,41 +2,23 @@
 % Please edit documentation in R/workflow-updates.R
 \name{workflow_updates}
 \alias{workflow_updates}
-\title{Scan subdirectories for outdated GitHub Actions workflow versions}
+\title{A local-only version of dependabot.}
 \usage{
 workflow_updates(root = ".", max_depth = 2L)
 }
 \arguments{
-\item{root}{Root directory to search. Defaults to the current working
-directory (\code{"."}).}
+\item{root}{Directory in which function is to be run.}
 
-\item{max_depth}{Maximum directory depth to descend below \code{root}. Passed
-directly to \code{find -maxdepth}. Defaults to \code{2L}.}
+\item{max_depth}{Maximal recursive depth for trawling sub-directories.}
 }
 \value{
-A \link[tibble:tibble]{tibble} with columns \code{action}, \code{latest},
-\code{current}, and \code{location} describing every outdated \verb{uses:} reference
-found, invisibly. Returns an empty tibble (also invisibly) when all
-references are up to date or no workflow files are found.
+(Invisibly) A \pkg{tibble} \code{data.frame} of all obsolete workflow
+versions. Function is primarily intended to be called for the side-effect of
+printing all results to screen.
 }
 \description{
-Walks subdirectories of \code{root} up to \code{max_depth} levels deep, finds any that
-contain both a \code{README.md} and a \verb{.github/workflows/} directory, and reports
-every \verb{uses:} reference whose version tag is older than the highest version
-of the same action observed anywhere in the scan.
-}
-\details{
-Directories (or whole subtrees) can be silently skipped by listing their
-paths - one per line - in a \code{.workflow-update-excludes} file located in
-\code{root}.
-}
-\examples{
-\dontrun{
-# Scan two levels deep from the current directory
-workflow_updates()
-
-# Scan a specific path, one level deep
-workflow_updates("~/projects", max_depth = 1L)
-}
-
+Scans all directories above where function is called, extracts maximum
+version number of all unique GitHub actions used in every workflow, and
+reports paths to any repositories which use workflow versions less than
+those.
 }
