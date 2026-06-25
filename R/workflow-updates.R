@@ -1,6 +1,8 @@
 # Scan subdirectories for GitHub Actions workflows and report outdated action versions.
 # Respects a '.workflow-update-excludes' file in the directory in which this is run.
 
+requireNamespace ("yaml", quietly = TRUE)
+
 # --- 1. Find candidate directories --------------------
 
 find_candidate_dirs <- function (root = ".", max_depth = 2L) {
@@ -148,6 +150,82 @@ find_and_filter_candidates <- function (root, max_depth) {
     return (candidates)
 }
 
+# --- 6. Find workflow names and badge URLs --------------------
+
+workflow_names <- function (candidate_dirs) {
+
+    problems <- lapply (candidate_dirs, function (d) {
+
+        ret <- tibble::tibble ()
+        f_readme <- fs::path (d, "README.md")
+        if (!fs::file_exists (f_readme)) {
+            return (ret)
+        }
+
+        wf_files <- fs::path (d, ".github", "workflows") |>
+            fs::dir_ls (regexp = "\\.yaml$", type = "file")
+        names <- vapply (wf_files, function (w) {
+            suppressWarnings (
+                yaml::read_yaml (w)$name
+            )
+        }, character (1L))
+        wf_files <- tibble::tibble (
+            dir = d,
+            file = fs::path_file (names (names)),
+            wf_name = as.character (names)
+        )
+        if (nrow (wf_files) < 1) {
+            return (ret)
+        }
+
+        readme <- readLines (f_readme)
+        index <- grep ("badges\\:\\s+(start|end)", readme)
+        if (length (index) == 0L) {
+            index <- grep ("\\[\\!\\[", readme)
+        }
+        if (length (index) == 0L) {
+            return (ret)
+        }
+        badges <- readme [seq (min (index), max (index))]
+        urls <- regmatches (badges, gregexpr ("\\(https\\:\\/\\/.*?\\)", badges))
+        urls <- gsub ("^\\(|\\)$", "", unlist (urls))
+        wf_urls <- grep ("workflow.*badge\\.svg", urls, value = TRUE)
+        readme_wf_names <- gsub ("^.*\\/workflows\\/|\\/badge\\.svg$", "", wf_urls)
+        wf_urls <- grep ("query\\=workflow", urls, value = TRUE)
+        readme_wf_names <- unique (c (
+            readme_wf_names,
+            gsub ("^.*workflow%3A", "", wf_urls)
+        ))
+
+        if (!all (readme_wf_names %in% wf_files$wf_name)) {
+            index <- vapply (readme_wf_names, function (n) {
+                grep (n, wf_files$wf_name, fixed = TRUE)
+            }, integer (1L))
+            ret <- wf_files [index, ] |>
+                dplyr::mutate (badge_wf_name = readme_wf_names)
+        }
+        return (ret)
+    })
+
+    problems <- do.call (rbind, problems)
+    for (p in unique (problems$dir)) {
+
+        cli::cli_h3 (cli::col_yellow ("{p}"))
+        p_these <- dplyr::filter (problems, dir == p)
+        for (i in seq_len (nrow (p_these))) {
+            f <- p_these$file [i]
+            w <- p_these$wf_name [i]
+            b <- p_these$badge_wf_name [i]
+            cli::cli_bullets (c (
+                cli::col_green ("file {f}: "),
+                "badge has '{b}' for workflow '{w}'"
+            ))
+        }
+    }
+
+    invisible (problems)
+}
+
 # --- Main --------------------
 
 #' A local-only version of dependabot.
@@ -224,4 +302,22 @@ workflow_updates <- function (root = ".", max_depth = 2L) {
     }
 
     invisible (outdated)
+}
+
+#' Identify any README.md badge links to workflows with names different from
+#' actual workflow values.
+#'
+#' Scans all directories above where function is called.
+#'
+#' @inheritParams workflow_updates
+#' @export
+workflow_badges <- function (root = ".", max_depth = 2L) {
+
+    candidates <- find_and_filter_candidates (root, max_depth)
+    if (length (candidates) == 0L) {
+        return (invisible (tibble::tibble ()))
+    }
+
+    res <- workflow_names (candidates)
+    invisible (res)
 }
