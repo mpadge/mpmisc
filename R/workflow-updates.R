@@ -214,6 +214,7 @@ workflow_names <- function (candidate_dirs) {
                 }
                 return (out)
             }, integer (1L))
+            index <- index [which (!is.na (index))]
             ret <- wf_files [index, ] |>
                 dplyr::mutate (badge_wf_name = readme_wf_names)
         }
