@@ -150,6 +150,8 @@ find_and_filter_candidates <- function (root, max_depth) {
     return (candidates)
 }
 
+# --- Main --------------------
+
 # --- 6. Find workflow names and badge URLs --------------------
 
 workflow_names <- function (candidate_dirs) {
@@ -199,7 +201,18 @@ workflow_names <- function (candidate_dirs) {
 
         if (!all (readme_wf_names %in% wf_files$wf_name)) {
             index <- vapply (readme_wf_names, function (n) {
-                grep (n, wf_files$wf_name, fixed = TRUE)
+                out <- grep (n, wf_files$wf_name, fixed = TRUE)
+                if (length (out) == 0L) {
+                    index2 <- vapply (wf_files$wf_name, function (w) {
+                        grepl (w, n)
+                    }, logical (1L))
+                    if (any (index2)) {
+                        out <- which (index2) [1L]
+                    } else {
+                        out <- NA_integer_
+                    }
+                }
+                return (out)
             }, integer (1L))
             ret <- wf_files [index, ] |>
                 dplyr::mutate (badge_wf_name = readme_wf_names)
@@ -225,8 +238,6 @@ workflow_names <- function (candidate_dirs) {
 
     invisible (problems)
 }
-
-# --- Main --------------------
 
 #' A local-only version of dependabot.
 #'
