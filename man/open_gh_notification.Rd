@@ -4,10 +4,10 @@
 \alias{open_gh_notification}
 \title{Open web browser to specified GitHub notification}
 \usage{
-open_gh_notification(what = "github", n)
+open_gh_notification(where = "github", n)
 }
 \arguments{
-\item{what}{Service to get notifications from; one of "github" or
+\item{where}{Service to get notifications from; one of "github" or
 "codeberg" (case-insensitive).}
 
 \item{n}{Number of notification as generated from

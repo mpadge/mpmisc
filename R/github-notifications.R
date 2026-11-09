@@ -15,12 +15,13 @@
 #' @export
 gh_notifications <- function (where = "github", quiet = FALSE) {
 
-    where <- match.arg (tolower (where), c ("github", "codeberg"))
+    where <- match_where (where)
     tok <- get_token (where)
 
     u <- switch (where,
         "github" = "https://api.github.com/notifications",
-        "codeberg" = "https://codeberg.org/api/v1/notifications"
+        "codeberg" = "https://codeberg.org/api/v1/notifications",
+        "codefloe" = "https://codefloe.com/api/v1/notifications"
     )
 
     x <- data.frame (
@@ -67,11 +68,10 @@ gh_notifications <- function (where = "github", quiet = FALSE) {
         )
         check_suite <- which (x$type == "CheckSuite")
         x$issue_num [check_suite] <- "CheckSuite"
-
     }
 
     if (!quiet) {
-        notifications_to_screen (x)
+        notifications_to_screen (x, where)
     }
 
     cache_notifications (x, where)
@@ -79,21 +79,29 @@ gh_notifications <- function (where = "github", quiet = FALSE) {
     invisible (x)
 }
 
+match_where <- function (where) {
+
+    match.arg (
+        tolower (where),
+        c ("github", "codeberg", "codefloe")
+    )
+}
+
 get_token <- function (where = "github") {
 
-    where <- match.arg (where, c ("github", "codeberg"))
+    where <- match_where (where)
 
     if (where == "github") {
         tok <- Sys.getenv ("GITHUB_TOKEN")
-    } else if (where == "codeberg") {
+    } else {
         e <- Sys.getenv ()
-        tok <- e [[grep ("codeberg", names (e), ignore.case = TRUE)]]
+        tok <- e [[grep (where, names (e), ignore.case = TRUE)]]
     }
     return (tok)
 }
 
 
-notifications_to_screen <- function (x) {
+notifications_to_screen <- function (x, where) {
 
     NC <- "\033[0m" # nolint
     ARG <- "\033[0;31m" # red                                  # nolint
@@ -124,32 +132,34 @@ notifications_to_screen <- function (x) {
         }
     } else {
 
-        msg <- paste0 (SYM, " ", TXT, "No new notifications.", NC)
+        msg <- paste0 (
+            SYM, " ", TXT, "No new notifications for ", where, ".", NC
+        )
         message (msg)
     }
 
 }
 
-cache_notifications_file <- function (what = "github") {
+cache_notifications_file <- function (where = "github") {
 
-    what <- match.arg (what, c ("github", "codeberg"))
+    where <- match_where (where)
     cache_dir <- rappdirs::user_cache_dir ("mpmisc")
     if (!dir.exists (cache_dir)) {
         dir.create (cache_dir, recursive = TRUE)
     }
 
-    f <- ifelse (
-        what == "github",
-        "latest_gh_notifications.Rds",
-        "latest_cb_notifications.Rds"
+    f <- switch (where,
+        "github" = "latest_gh_notifications.Rds",
+        "codeberg" = "latest_cb_notifications.Rds",
+        "codefloe" = "latest_cf_notifications.Rds"
     )
     file.path (cache_dir, f)
 }
 
-cache_notifications <- function (x, what = "github") {
+cache_notifications <- function (x, where = "github") {
 
-    what <- match.arg (what, c ("github", "codeberg"))
-    saveRDS (x, cache_notifications_file (what))
+    where <- match_where (where)
+    saveRDS (x, cache_notifications_file (where))
 }
 
 #' Open web browser to specified GitHub notification
@@ -157,22 +167,22 @@ cache_notifications <- function (x, what = "github") {
 #' This accepts only the single parameter which corresponds to a number from the
 #' most recently extracted and cached notification list.
 #'
-#' @param what Service to get notifications from; one of "github" or
+#' @param where Service to get notifications from; one of "github" or
 #' "codeberg" (case-insensitive).
 #' @param n Number of notification as generated from
 #' \link{gh_notifications}
 #' @return Nothing
 #' @export
-open_gh_notification <- function (what = "github", n) {
+open_gh_notification <- function (where = "github", n) {
 
-    what <- match.arg (what, c ("github", "codeberg"))
+    where <- match_where (where)
 
     NC <- "\033[0m" # nolint
     ARG <- "\033[0;31m" # red                                  # nolint
     TXT <- "\033[0;32m" # green, or 1;32m for light green      # nolint
     SYM <- "\u2192" # right arrow                              # nolint
 
-    x <- readRDS (cache_notifications_file (what))
+    x <- readRDS (cache_notifications_file (where))
 
     if (length (x) == 0) {
 
@@ -191,9 +201,10 @@ open_gh_notification <- function (what = "github", n) {
 
         x <- x [n, ]
 
-        base_url <- switch (what,
+        base_url <- switch (where,
             "github" = "https://github.com/",
-            "codeberg" = "https://codeberg.org/"
+            "codeberg" = "https://codeberg.org/",
+            "codefloe" = "https://codefloe.com"
         )
 
         url <- paste0 (
